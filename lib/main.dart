@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
+import 'package:themoviedb/widgets/auth/reset_password.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 
 void main() {
@@ -22,8 +23,18 @@ class MyApp extends StatelessWidget {
       routes: {
         '/auth': (context) => const AuthWidget(),
         '/main_screen': (context) => const MainScreenWidget(),
+        '/reset_password': (context) => const ResetPasswordWidget(),
       },
       //home: AuthWidget(),
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialPageRoute<void>(builder: (context) {
+          return Scaffold(
+            body: Center(
+              child: Text('Произошла ошибка навигации')
+            ),
+          );
+        });
+      },
     );
   }
 }

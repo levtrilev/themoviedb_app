@@ -94,9 +94,14 @@ class _AuthFormState extends State<AuthForm> {
       // final navigator = Navigator.of(context);
       // navigator.push(
       //     MaterialPageRoute<void>(builder: (context) => MainScreenWidget()));
-      Navigator.of(context).pushNamed('/main_screen');
+      Navigator.of(context).pushReplacementNamed('/main_screen');
+      // Navigator.of(context).pushNamed('/main_screen');
     }
     setState(() {});
+  }
+
+  void _reset_password() {
+    Navigator.of(context).pushNamed('/reset_password');
   }
 
   final _buttonStyle = ButtonStyle(
@@ -169,7 +174,7 @@ class _AuthFormState extends State<AuthForm> {
                 TextButton(
                   style: _buttonStyle,
                   child: Text('Отмена'),
-                  onPressed: () {},
+                  onPressed: _reset_password,
                 )
               ],
             ),
