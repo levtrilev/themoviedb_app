@@ -81,48 +81,64 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
+    //final textFieldDecoration = OwnInputDecoration('Пароль (4 characters minimum)');
     return Column(children: [
       Padding(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 10),
+        padding: const EdgeInsets.fromLTRB(24, 12, 24, 6),
         child: TextField(
-          obscureText: false,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Имя пользователя',
-          ),
+            obscureText: false,
+            decoration: OwnInputDecoration('Имя пользователя')),
+      ),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
+        child: TextField(
+          obscureText: true,
+          decoration: OwnInputDecoration('Пароль (4 characters minimum)'),
         ),
       ),
       Padding(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 10),
+        padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
         child: TextField(
-          obscureText: true,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Пароль (4 characters minimum)',
-          ),
-        ),
+            obscureText: true,
+            decoration: OwnInputDecoration('Подтверждение пароля')),
       ),
-            Padding(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 10),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(24, 6, 24, 10),
         child: TextField(
-          obscureText: true,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Подтверждение пароля',
-          ),
-        ),
+            obscureText: false, decoration: OwnInputDecoration('Эл.почта')),
       ),
-            Padding(
-        padding: const EdgeInsets.fromLTRB(24, 12, 24, 10),
-        child: TextField(
-          obscureText: false,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Эл.почта',
-          ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          children: [
+            Text(
+                'Нажимая кнопку «Зарегистрироваться» ниже, я подтверждаю, что я прочитал и согласен с Условиями использования TMDb и Политикой конфиденциальности.'),
+            Row(
+              children: [
+                ElevatedButton(
+                  child: Text('Зарегистрироваться'),
+                  onPressed: () {},
+                ),
+                SizedBox(width: 16),
+                TextButton(
+                  child: Text('Отмена'),
+                  onPressed: () {},
+                )
+              ],
+            )
+          ],
         ),
       ),
     ]);
+  }
+
+  InputDecoration OwnInputDecoration(String label) {
+    return InputDecoration(
+      border: OutlineInputBorder(),
+      labelText: label,
+      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      isCollapsed: true,
+    );
   }
 }
 
