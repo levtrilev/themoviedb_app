@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 
 class AuthWidget extends StatefulWidget {
   const AuthWidget({Key? key}) : super(key: key);
@@ -79,33 +80,76 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
+  final _loginTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+  final _passwordCheckTextController = TextEditingController();
+  final _emailTextController = TextEditingController();
+  String? _errorText = null;
+
+  void _auth() {
+    if (_passwordTextController.text != _passwordCheckTextController.text) {
+      _errorText = 'Два варианта пароля не совпадают!';
+    } else {
+      _errorText = null;
+      // final navigator = Navigator.of(context);
+      // navigator.push(
+      //     MaterialPageRoute<void>(builder: (context) => MainScreenWidget()));
+      Navigator.of(context).pushNamed('/main_screen');
+    }
+    setState(() {});
+  }
+
+  final _buttonStyle = ButtonStyle(
+      textStyle: MaterialStateProperty.all(
+    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+  ));
   @override
   Widget build(BuildContext context) {
     //final textFieldDecoration = OwnInputDecoration('Пароль (4 characters minimum)');
     return Column(children: [
+      if (_errorText != null) ...[
+        Text(
+          _errorText!,
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: 18,
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        )
+      ],
       Padding(
         padding: const EdgeInsets.fromLTRB(24, 12, 24, 6),
         child: TextField(
-            obscureText: false,
-            decoration: OwnInputDecoration('Имя пользователя')),
+          obscureText: false,
+          decoration: OwnInputDecoration('Имя пользователя'),
+          controller: _loginTextController,
+        ),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
         child: TextField(
           obscureText: true,
           decoration: OwnInputDecoration('Пароль (4 characters minimum)'),
+          controller: _passwordTextController,
         ),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
         child: TextField(
-            obscureText: true,
-            decoration: OwnInputDecoration('Подтверждение пароля')),
+          obscureText: true,
+          decoration: OwnInputDecoration('Подтверждение пароля'),
+          controller: _passwordCheckTextController,
+        ),
       ),
       Padding(
-        padding: const EdgeInsets.fromLTRB(24, 6, 24, 10),
+        padding: const EdgeInsets.fromLTRB(24, 6, 24, 25),
         child: TextField(
-            obscureText: false, decoration: OwnInputDecoration('Эл.почта')),
+          obscureText: false,
+          decoration: OwnInputDecoration('Эл.почта'),
+          controller: _emailTextController,
+        ),
       ),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -113,19 +157,23 @@ class _AuthFormState extends State<AuthForm> {
           children: [
             Text(
                 'Нажимая кнопку «Зарегистрироваться» ниже, я подтверждаю, что я прочитал и согласен с Условиями использования TMDb и Политикой конфиденциальности.'),
+            SizedBox(height: 25),
             Row(
               children: [
                 ElevatedButton(
+                  style: _buttonStyle,
                   child: Text('Зарегистрироваться'),
-                  onPressed: () {},
+                  onPressed: _auth,
                 ),
                 SizedBox(width: 16),
                 TextButton(
+                  style: _buttonStyle,
                   child: Text('Отмена'),
                   onPressed: () {},
                 )
               ],
-            )
+            ),
+            SizedBox(height: 25),
           ],
         ),
       ),
