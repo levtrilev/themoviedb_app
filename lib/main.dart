@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/Theme/app_colors.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
 import 'package:themoviedb/widgets/auth/reset_password.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
@@ -16,7 +17,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: AppBarTheme(
-          backgroundColor: const Color.fromRGBO(3, 37, 65, 1),
+          backgroundColor: AppColors.mainDarkBlue,
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: AppColors.mainDarkBlue,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
         ),
       ),
       initialRoute: '/auth',
@@ -29,9 +35,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<void>(builder: (context) {
           return Scaffold(
-            body: Center(
-              child: Text('Произошла ошибка навигации')
-            ),
+            body: Center(child: Text('Произошла ошибка навигации')),
           );
         });
       },
