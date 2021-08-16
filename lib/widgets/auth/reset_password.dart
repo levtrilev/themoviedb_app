@@ -94,6 +94,12 @@ class InputFormWidget extends StatelessWidget {
               }
             },
           ),
+          ElevatedButton(
+            child: Text('Json test'),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/json_test');
+            },
+          ),
         ],
       ),
     );

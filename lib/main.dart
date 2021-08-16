@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb/Theme/app_colors.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
+import 'package:themoviedb/widgets/auth/json_test.dart';
 import 'package:themoviedb/widgets/auth/reset_password.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/auth': (context) => const AuthWidget(),
         '/main_screen': (context) => const MainScreenWidget(),
         '/reset_password': (context) => const ResetPasswordWidget(),
+        '/json_test': (context) => const JsonTestWidget(),
       },
       //home: AuthWidget(),
       onGenerateRoute: (RouteSettings settings) {
