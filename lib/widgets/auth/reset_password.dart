@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/images.dart';
 
 class ResetPasswordWidget extends StatefulWidget {
   const ResetPasswordWidget({Key? key}) : super(key: key);
@@ -100,6 +101,7 @@ class InputFormWidget extends StatelessWidget {
               Navigator.of(context).pushNamed('/json_test');
             },
           ),
+          Image(image: AppImages.reset_password),
         ],
       ),
     );
