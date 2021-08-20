@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class PaintTestWidget extends StatelessWidget {
@@ -29,14 +28,15 @@ class PaintTestWidget extends StatelessWidget {
           height: 100,
         ),
         Container(
-          width: 190,
-          height: 190,
+          width: 100,
+          height: 100,
           child: RadialPercentWidget(
-            backgroundColor: Colors.deepPurple,
-            restColor: Colors.yellow,
-            ratingColor: Colors.red,
+            backgroundColor: Colors.black,
+            restColor: Colors.grey,
+            ratingColor: Colors.lightGreenAccent,
             rating: rating,
-            lineWidth: 9,
+            lineWidth: 8,
+            lineMargin: 6,
             child: Text(
               '${(100 * rating).toStringAsFixed(0)}%',
               style: TextStyle(
@@ -58,6 +58,7 @@ class RadialPercentWidget extends StatelessWidget {
   final Color ratingColor;
   final Color restColor;
   final double lineWidth;
+  final double lineMargin;
   const RadialPercentWidget({
     Key? key,
     required this.child,
@@ -66,6 +67,7 @@ class RadialPercentWidget extends StatelessWidget {
     required this.ratingColor,
     required this.restColor,
     required this.lineWidth,
+    required this.lineMargin,
   }) : super(key: key);
 
   @override
@@ -80,6 +82,7 @@ class RadialPercentWidget extends StatelessWidget {
             ratingColor: ratingColor,
             rating: rating,
             lineWidth: lineWidth,
+            lineMargin: lineMargin,
           ),
         ),
         Padding(
@@ -99,20 +102,24 @@ class MyCustomPainter extends CustomPainter {
   final Color ratingColor;
   final Color restColor;
   final double lineWidth;
+  final double lineMargin;
   MyCustomPainter({
     required this.rating,
     required this.backgroundColor,
     required this.ratingColor,
     required this.restColor,
     required this.lineWidth,
+    required this.lineMargin,
   });
   @override
   void paint(Canvas canvas, Size size) {
-    final lineMargin = 2.0;
     final innerRectangleStartOffset =
-        Offset(lineMargin + lineWidth, lineMargin + lineWidth);
-    final innerOvalSize = Size(size.width - 2 * lineWidth - 2 * lineMargin,
-        size.height - 2 * lineWidth - 2 * lineMargin);
+        Offset((lineWidth) / 2 + lineMargin, (lineWidth) / 2 + lineMargin);
+    // Offset(lineMargin + lineWidth, lineMargin + lineWidth);
+    final innerOvalSize = Size(size.width - lineWidth - 2 * lineMargin,
+        size.height - lineWidth - 2 * lineMargin);
+    // final innerOvalSize = Size(size.width - lineWidth - 2 * lineMargin,
+    //     size.height - lineWidth - 2 * lineMargin);
     drawBackgroundOval(canvas, size);
     drawRestArc(canvas, innerRectangleStartOffset, innerOvalSize);
     drawRatingArc(canvas, innerRectangleStartOffset, innerOvalSize);
