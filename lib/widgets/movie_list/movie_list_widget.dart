@@ -3,20 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:themoviedb/images.dart';
 
 class Movie {
-  AssetImage imageName;
-  String title;
-  String time;
-  String description;
+  final int id;
+  final AssetImage imageName;
+  final String title;
+  final String time;
+  final String description;
 
   Movie(
-      {required this.imageName,
+      {required this.id,
+      required this.imageName,
       required this.title,
       required this.time,
       required this.description});
 }
 
 class MovieListWidget extends StatefulWidget {
-
   MovieListWidget({Key? key}) : super(key: key);
 
   @override
@@ -26,42 +27,49 @@ class MovieListWidget extends StatefulWidget {
 class _MovieListWidgetState extends State<MovieListWidget> {
   final _movies = [
     Movie(
+        id: 1,
         imageName: AppImages.escape_from_shousheng,
         title: 'Побег из Шоушенка',
         time: '1 января 2020',
         description:
             'Это такой захватывающий сюжет про побег оттуда откуда невозможно побежать'),
     Movie(
+        id: 2,
         imageName: AppImages.christny_father,
         title: 'Крестный отец',
         time: '2 февраля 2021',
         description:
             'Дон Карлеоне выслушивает плачущего отца изнасилованной девушки и отвечает: Ты приходишь в мой дом в день свадьбы моей дочери'),
     Movie(
+        id: 3,
         imageName: AppImages.indian_film,
         title: 'Радж Капур раджает',
         time: '31 декабря 1980',
         description:
             'Слезы умиления текут рекой. Бравый простой веселый прекрасный индийский парень размахивает руками и враги падают на расстоянии пяти метров. Близняшки спасены и вот их свадьба!'),
     Movie(
+        id: 4,
         imageName: AppImages.christny_father,
         title: 'Смертельная смерть',
         time: '31 июля 1989',
         description:
             'Фильм удостоен шести номинаций на «Оскар», в том числе и как лучший фильм года. Шоушенк — название тюрьмы. И если тебе нет еще 30-ти, а ты получаешь пожизненное, то приготовься к худшему: для тебя выхода из Шоушенка не будет! Актриса Рита Хэйворт — любимица всей Америки. Энди Дифрейну она тоже очень нравилась. Рита никогда не слышала о существовании Энди, однако жизнь Дифрейну, бывшему вице-президенту крупного банка, осужденному за убийство жены и ее любовника, Рита Хэйворт все-таки спасла.'),
     Movie(
+        id: 5,
         imageName: AppImages.escape_from_shousheng,
         title: 'Побег из Шоушенка',
         time: '1 января 2020',
         description:
             'Это такой захватывающий сюжет про побег оттуда откуда невозможно побежать'),
     Movie(
+        id: 6,
         imageName: AppImages.christny_father,
         title: 'Крестный отец',
         time: '2 февраля 2021',
         description:
             'Дон Карлеоне выслушивает плачущего отца изнасилованной девушки и отвечает: Ты приходишь в мой дом в день свадьбы моей дочери'),
     Movie(
+        id: 7,
         imageName: AppImages.indian_film,
         title: 'Радж Капур раджает',
         time: '31 декабря 1980',
@@ -70,8 +78,13 @@ class _MovieListWidgetState extends State<MovieListWidget> {
   ];
   var _filteredMovies = <Movie>[];
   final _searchController = TextEditingController();
-  
-  void searchMovies () {
+
+  void _onMovieTap(int index) {
+    final id = _movies[index].id;
+    Navigator.of(context).pushNamed('/main_screen/movie_details', arguments: id);
+  }
+
+  void searchMovies() {
     final query = _searchController.text;
     if (query.isNotEmpty) {
       _filteredMovies = _movies.where((Movie movie) {
@@ -82,7 +95,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
     }
     setState(() {});
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -172,9 +185,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: () {
-                        print('times card pressed');
-                      },
+                      onTap: () => _onMovieTap(index),
                     ),
                   ),
                 ],

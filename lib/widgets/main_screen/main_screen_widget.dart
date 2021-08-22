@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/widgets/example_state/example_state_widget.dart';
 import 'package:themoviedb/widgets/movie_list/movie_list_widget.dart';
 import 'package:themoviedb/widgets/paint_test/paint_test.dart';
 
@@ -30,9 +31,9 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       body: IndexedStack(
         index: _selectedTab,
         children: [
+          Example(),
           Center(child: PaintTestWidget()),
           MovieListWidget(),
-          Center(child: Text('Сериалы')),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

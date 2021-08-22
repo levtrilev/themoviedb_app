@@ -1,57 +1,8 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-class PaintTestWidget extends StatelessWidget {
-  static const rating = 0.67;
-  const PaintTestWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 100,
-        ),
-        Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.red,
-            ),
-          ),
-          child: CustomPaint(
-            painter: MyTestCustomPainter(),
-          ),
-        ),
-        SizedBox(
-          height: 100,
-        ),
-        Container(
-          width: 100,
-          height: 100,
-          child: _RadialPercentWidget(
-            backgroundColor: Colors.black,
-            restColor: Colors.grey,
-            ratingColor: Colors.lightGreenAccent,
-            rating: rating,
-            lineWidth: 8,
-            lineMargin: 6,
-            child: Text(
-              '${(100 * rating).toStringAsFixed(0)}%',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _RadialPercentWidget extends StatelessWidget {
+class RadialPercentWidget extends StatelessWidget {
   final Widget child;
   final double rating;
   final Color backgroundColor;
@@ -59,7 +10,7 @@ class _RadialPercentWidget extends StatelessWidget {
   final Color restColor;
   final double lineWidth;
   final double lineMargin;
-  const _RadialPercentWidget({
+  const RadialPercentWidget({
     Key? key,
     required this.child,
     required this.rating,
