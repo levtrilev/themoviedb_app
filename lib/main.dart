@@ -3,6 +3,7 @@ import 'package:themoviedb/Theme/app_colors.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
 import 'package:themoviedb/widgets/auth/json_test.dart';
 import 'package:themoviedb/widgets/auth/reset_password.dart';
+import 'package:themoviedb/widgets/example_inherited/pass_data_to_child.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_widget.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           unselectedItemColor: Colors.grey,
         ),
       ),
-      initialRoute: '/main_screen',
+      initialRoute: '/pass_data_to_child',
       routes: {
         '/auth': (context) => const AuthWidget(),
         '/main_screen': (context) => const MainScreenWidget(),
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         },
         '/reset_password': (context) => const ResetPasswordWidget(),
         '/json_test': (context) => const JsonTestWidget(),
+        '/pass_data_to_child': (context) => const PassDataToChild(),
       },
       //home: AuthWidget(),
       onGenerateRoute: (RouteSettings settings) {
