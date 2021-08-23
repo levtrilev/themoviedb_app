@@ -40,7 +40,7 @@ class FirstNumberWidget extends StatelessWidget {
         border: OutlineInputBorder(),
       ),
       onChanged: (value) =>
-          SimpleCalcWidgetProvider.of(context)?.firstNumber = value,
+          SimpleCalcWidgetProvider.get(context)?.firstNumber = value,
     );
   }
 }
@@ -55,7 +55,7 @@ class SecondNumberWidget extends StatelessWidget {
         border: OutlineInputBorder(),
       ),
       onChanged: (value) =>
-          SimpleCalcWidgetProvider.of(context)?.secondNumber = value,
+          SimpleCalcWidgetProvider.get(context)?.secondNumber = value,
     );
   }
 }
@@ -66,7 +66,7 @@ class SummButtonVidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => SimpleCalcWidgetProvider.of(context)?.summ(),
+      onPressed: () => SimpleCalcWidgetProvider.get(context)?.summ(),
       child: const Text('Посчитать сумму'),
     );
   }
@@ -77,7 +77,7 @@ class ResultWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final value = SimpleCalcWidgetProvider.of(context)?.summResult ?? '-1';
+    final value = SimpleCalcWidgetProvider.watch(context)?.summResult ?? '-1';
     return Text('Результат: $value');
   }
 }
@@ -118,9 +118,16 @@ class SimpleCalcWidgetProvider
           child: child,
         );
 
-  static SimpleCalcWidgetModel? of(BuildContext context) {
+  static SimpleCalcWidgetModel? watch(BuildContext context) {
     return context
         .dependOnInheritedWidgetOfExactType<SimpleCalcWidgetProvider>()
         ?.model;
+  }
+
+  static SimpleCalcWidgetModel? get(BuildContext context) {
+    final widget = context
+        .getElementForInheritedWidgetOfExactType<SimpleCalcWidgetProvider>()
+        ?.widget;
+    return widget is SimpleCalcWidgetProvider ? widget.notifier : null;
   }
 }
