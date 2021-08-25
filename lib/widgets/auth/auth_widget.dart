@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/widgets/auth/auth_model.dart';
 // import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 
 class AuthWidget extends StatefulWidget {
@@ -13,11 +14,35 @@ class _AuthWidgetState extends State<AuthWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Преимущества членства')),
+        title: Center(child: Text('Login to your account')),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 12, 24, 10),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            AuthForm(),
+            Divider(
+              thickness: 2,
+            ),
+            Text(
+              'Преимущества членства',
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 20,
+              ),
+            ),
+            Text(
+              'Создание учётной записи свободно и просто. Заполните форму ниже, чтобы начать.',
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+              ),
+            ),
             GreetingRow(
               text:
                   'Find something to watch on your subscribed streaming services',
@@ -41,30 +66,6 @@ class _AuthWidgetState extends State<AuthWidget> {
             GreetingRow(
               text: 'Внесение и улучшение информации в нашей базе данных',
             ),
-            Divider(
-              thickness: 2,
-            ),
-            Text(
-              'Зарегистрировать учётную запись',
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-                fontSize: 20,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 12, 24, 10),
-              child: Text(
-                'Создание учётной записи свободно и просто. Заполните форму ниже, чтобы начать.',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            AuthForm(),
           ],
         ),
       ),
@@ -72,54 +73,23 @@ class _AuthWidgetState extends State<AuthWidget> {
   }
 }
 
-class AuthForm extends StatefulWidget {
+class AuthForm extends StatelessWidget {
   const AuthForm({Key? key}) : super(key: key);
 
-  @override
-  _AuthFormState createState() => _AuthFormState();
-}
-
-class _AuthFormState extends State<AuthForm> {
-  final _loginTextController = TextEditingController();
-  final _passwordTextController = TextEditingController();
-  final _passwordCheckTextController = TextEditingController();
-  final _emailTextController = TextEditingController();
-  String? _errorText = null;
-
-  void _auth() {
-    if (_passwordTextController.text != _passwordCheckTextController.text) {
-      _errorText = 'Два варианта пароля не совпадают!';
-    } else {
-      _errorText = null;
-      // final navigator = Navigator.of(context);
-      // navigator.push(
-      //     MaterialPageRoute<void>(builder: (context) => MainScreenWidget()));
-      Navigator.of(context).pushReplacementNamed('/main_screen');
-      // Navigator.of(context).pushNamed('/main_screen');
-    }
-    setState(() {});
-  }
-
   void _reset_password() {
-    Navigator.of(context).pushNamed('/reset_password');
+    // Navigator.of(context).pushNamed('/reset_password');
   }
 
-  final _buttonStyle = ButtonStyle(
-      textStyle: MaterialStateProperty.all(
-    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-  ));
   @override
   Widget build(BuildContext context) {
-    //final textFieldDecoration = OwnInputDecoration('Пароль (4 characters minimum)');
+    final model = AuthProvider.read(context)?.model;
+    // final _buttonStyle = ButtonStyle(
+    //     textStyle: MaterialStateProperty.all(
+    //   TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+    // ));
     return Column(children: [
-      if (_errorText != null) ...[
-        Text(
-          _errorText!,
-          style: TextStyle(
-            color: Colors.red,
-            fontSize: 18,
-          ),
-        ),
+      ...[
+        const _ErrorMessageWidget(),
         SizedBox(
           height: 8,
         )
@@ -128,52 +98,45 @@ class _AuthFormState extends State<AuthForm> {
         padding: const EdgeInsets.fromLTRB(24, 12, 24, 6),
         child: TextField(
           obscureText: false,
-          decoration: OwnInputDecoration('Имя пользователя'),
-          controller: _loginTextController,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Username',
+            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            isCollapsed: true,
+          ),
+          controller: model?.loginTextController, // _loginTextController,
         ),
       ),
       Padding(
         padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
         child: TextField(
           obscureText: true,
-          decoration: OwnInputDecoration('Пароль (4 characters minimum)'),
-          controller: _passwordTextController,
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
-        child: TextField(
-          obscureText: true,
-          decoration: OwnInputDecoration('Подтверждение пароля'),
-          controller: _passwordCheckTextController,
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(24, 6, 24, 25),
-        child: TextField(
-          obscureText: false,
-          decoration: OwnInputDecoration('Эл.почта'),
-          controller: _emailTextController,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Password',
+            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            isCollapsed: true,
+          ),
+          controller: model?.passwordTextController, // _passwordTextController,
         ),
       ),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
-            Text(
-                'Нажимая кнопку «Зарегистрироваться» ниже, я подтверждаю, что я прочитал и согласен с Условиями использования TMDb и Политикой конфиденциальности.'),
+            // Text(
+            //     'Нажимая кнопку «Зарегистрироваться» ниже, я подтверждаю, что я прочитал и согласен с Условиями использования TMDb и Политикой конфиденциальности.'),
             SizedBox(height: 25),
             Row(
               children: [
-                ElevatedButton(
-                  style: _buttonStyle,
-                  child: Text('Зарегистрироваться'),
-                  onPressed: _auth,
-                ),
+                _AuthButtonWidget(),
                 SizedBox(width: 16),
                 TextButton(
-                  style: _buttonStyle,
-                  child: Text('Отмена'),
+                  style: ButtonStyle(
+                      textStyle: MaterialStateProperty.all(
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  )),
+                  child: Text('Reset password'),
                   onPressed: _reset_password,
                 )
               ],
@@ -184,13 +147,45 @@ class _AuthFormState extends State<AuthForm> {
       ),
     ]);
   }
+}
 
-  InputDecoration OwnInputDecoration(String label) {
-    return InputDecoration(
-      border: OutlineInputBorder(),
-      labelText: label,
-      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      isCollapsed: true,
+class _AuthButtonWidget extends StatelessWidget {
+  const _AuthButtonWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = AuthProvider.watch(context)?.model;
+    final onPressed =
+        model?.canStartAuth == true ? () => model?.auth(context) : null;
+    return ElevatedButton(
+      style: ButtonStyle(
+          textStyle: MaterialStateProperty.all(
+        TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      )),
+      child: Text('Login'),
+      onPressed: onPressed,
+    );
+  }
+}
+
+class _ErrorMessageWidget extends StatelessWidget {
+  const _ErrorMessageWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final errorMessage = AuthProvider.watch(context)?.model.errorMessage;
+    if (errorMessage == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Text(
+        errorMessage,
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 18,
+        ),
+      ),
     );
   }
 }

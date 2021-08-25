@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb/Theme/app_colors.dart';
+import 'package:themoviedb/widgets/auth/auth_model.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
 import 'package:themoviedb/widgets/auth/json_test.dart';
 import 'package:themoviedb/widgets/auth/reset_password.dart';
@@ -29,9 +30,9 @@ class MyApp extends StatelessWidget {
           unselectedItemColor: Colors.grey,
         ),
       ),
-      initialRoute: '/inherited_notifier_example',
+      initialRoute: '/auth',
       routes: {
-        '/auth': (context) => const AuthWidget(),
+        '/auth': (context) => AuthProvider(child: const AuthWidget(), model: AuthModel(),),
         '/main_screen': (context) => const MainScreenWidget(),
         '/main_screen/movie_details': (context) {
           final arguments = ModalRoute.of(context)!.settings.arguments;
