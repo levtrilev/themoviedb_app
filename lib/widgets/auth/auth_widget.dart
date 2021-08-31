@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/widgets/auth/auth_model.dart';
 // import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 
@@ -25,7 +26,7 @@ class _AuthWidgetState extends State<AuthWidget> {
             SizedBox(
               height: 12,
             ),
-            AuthForm(),
+            const _AuthForm(),
             Divider(
               thickness: 2,
             ),
@@ -73,8 +74,8 @@ class _AuthWidgetState extends State<AuthWidget> {
   }
 }
 
-class AuthForm extends StatelessWidget {
-  const AuthForm({Key? key}) : super(key: key);
+class _AuthForm extends StatelessWidget {
+  const _AuthForm({Key? key}) : super(key: key);
 
   void _reset_password() {
     // Navigator.of(context).pushNamed('/reset_password');
@@ -82,7 +83,7 @@ class AuthForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = AuthProvider.read(context)?.model;
+    final model = NotifierProvider.read<AuthModel>(context);
     // final _buttonStyle = ButtonStyle(
     //     textStyle: MaterialStateProperty.all(
     //   TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
@@ -156,7 +157,7 @@ class _AuthButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = AuthProvider.watch(context)?.model;
+    final model = NotifierProvider.watch<AuthModel>(context);
     final onPressed =
         model?.canStartAuth == true ? () => model?.auth(context) : null;
         final child = model?.isAuthProgress == true ? CircularProgressIndicator() : Text('Login');
@@ -176,7 +177,7 @@ class _ErrorMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final errorMessage = AuthProvider.watch(context)?.model.errorMessage;
+    final errorMessage = NotifierProvider.watch<AuthModel>(context)?.errorMessage;
     if (errorMessage == null) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),

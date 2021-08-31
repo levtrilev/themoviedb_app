@@ -1,8 +1,10 @@
 //import 'dart:ffi';
+//import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:themoviedb/domain/api_client.dart';
 import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
+import 'package:themoviedb/ui/navigation/main_navigation.dart';
 
 class AuthModel extends ChangeNotifier {
   final _apiClient = ApiClient();
@@ -34,9 +36,31 @@ class AuthModel extends ChangeNotifier {
         username: login,
         password: password,
       );
-    } catch (e) {
-      _errorMessage = 'Неправильный логин пароль!';
-    }
+    } on ApiClientException catch (e) {
+      switch (e.type) {
+        case ApiClientExceptionType.Network:
+          _errorMessage = 'Сервер недоступен! Проверьте соединение.';
+          break;
+        case ApiClientExceptionType.Auth:
+          _errorMessage = 'Неправильный логин пароль!';
+          break;
+        case ApiClientExceptionType.Other:
+          _errorMessage =
+              'Произошла ошибка (ApiClientExceptionType.Other) ошибка: ${e.toString()}- попробуйде еще раз!';
+          break;
+        case ApiClientExceptionType.ApiKey:
+          _errorMessage =
+              'Произошла ошибка - неверный ApiKey!';
+          break;
+        case ApiClientExceptionType.Token:
+          _errorMessage =
+              'Произошла ошибка - неверный request token!';
+          break;
+      }
+    } //catch (e) {
+    //   _errorMessage =
+    //           'Произошла ошибка: ${e.toString()}- попробуйде еще раз!';
+    // }
     _isAuthProgress = false;
     if (_errorMessage != null) {
       notifyListeners();
@@ -48,31 +72,7 @@ class AuthModel extends ChangeNotifier {
       return;
     }
     await _sessionDataProvider.setSessionId(sessionId);
-    Navigator.of(context).pushNamed('/main_screen');
-  }
-}
-
-class AuthProvider extends InheritedNotifier {
-  final AuthModel model;
-  AuthProvider({
-    Key? key,
-    required this.model,
-    required this.child,
-  }) : super(
-          key: key,
-          notifier: model,
-          child: child,
-        );
-
-  final Widget child;
-
-  static AuthProvider? watch(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AuthProvider>();
-  }
-
-  static AuthProvider? read(BuildContext context) {
-    final widget =
-        context.getElementForInheritedWidgetOfExactType<AuthProvider>()?.widget;
-    return widget is AuthProvider ? widget : null;
+    Navigator.of(context)
+        .pushReplacementNamed(MainNavigationRouteNames.mainScreen);
   }
 }
