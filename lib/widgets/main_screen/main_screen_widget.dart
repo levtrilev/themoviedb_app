@@ -3,6 +3,7 @@ import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
 import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/widgets/example_state/example_state_widget.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_model.dart';
+import 'package:themoviedb/widgets/movie_list/movie_list_model.dart';
 import 'package:themoviedb/widgets/movie_list/movie_list_widget.dart';
 import 'package:themoviedb/widgets/paint_test/paint_test.dart';
 
@@ -15,11 +16,23 @@ class MainScreenWidget extends StatefulWidget {
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
   int _selectedTab = 0;
+  final movieListModel = MovieListModel();
   void onSelectTab(int index) {
     if (_selectedTab == index) return;
     setState(() {
       _selectedTab = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    movieListModel.setupLocale(context);
   }
 
   @override
@@ -41,7 +54,8 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       body: IndexedStack(
         index: _selectedTab,
         children: [
-          MovieListWidget(),
+          NotifierProvider(
+              model: movieListModel, child: const MovieListWidget()),
           Example(),
           Center(child: PaintTestWidget()),
         ],

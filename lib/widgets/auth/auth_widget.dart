@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/widgets/auth/auth_model.dart';
+
 // import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 
 class AuthWidget extends StatefulWidget {
@@ -139,6 +140,13 @@ class _AuthForm extends StatelessWidget {
                   )),
                   child: Text('Reset password'),
                   onPressed: _reset_password,
+                ), TextButton(
+                  style: ButtonStyle(
+                      textStyle: MaterialStateProperty.all(
+                    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  )),
+                  child: Text('Register'),
+                  onPressed: (){},
                 )
               ],
             ),

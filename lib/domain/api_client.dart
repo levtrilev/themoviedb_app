@@ -1,5 +1,9 @@
 import 'dart:convert';
-import 'dart:io'; // for mobile (non-web)
+import 'dart:io';
+
+import 'package:themoviedb/domain/entity/todo_item.dart';
+
+import 'entity/popular_movie_responce.dart'; // for mobile (non-web)
 
 /*
 // Возможные ошибки при соединении:
@@ -24,8 +28,27 @@ class ApiClientException implements Exception {
 class ApiClient {
   final _client = HttpClient();
   static const _host = 'http://api.themoviedb.org/3';
-  //static const _imageUrl = 'http://tmdb.org/t/p/w500';
+  static const _hostMin = 'http://10.0.2.2:5000';
+  static const _imageUrl = 'http://tmdb.org/t/p/w500';
   static const _apiKey = '0a2a46b5593a0978cc8e87ba34037430';
+
+  static imageUrl(String path) {
+    return _imageUrl + path;
+  }
+
+  Future<List<TodoItem>?> minimalApiGet() async {
+    final parser = (dynamic json) {
+        final jsonMapList = json.map((e) => e as Map<String, dynamic>);
+        final responce = jsonMapList.map((e) => TodoItem.fromJson(e)).toList();
+        return responce;
+    };
+
+    final result = await _get(_hostMin, '/todoitems', parser);
+    return result;
+    // // _client.connectionTimeout = Duration.zero;
+    // final url = Uri.parse('$_host/authentication/token/new?api_key=$_apiKey');
+    // //final urlMin = Uri.parse('http://10.0.2.2:5000/todoitems');
+  }
 
   Future<String> auth({
     required String username,
@@ -42,11 +65,12 @@ class ApiClient {
   }
 
   Future<T> _get<T>(
+    String host,
     String path,
     T Function(dynamic json) parser, [
     Map<String, dynamic>? parameters,
   ]) async {
-    final url = _makeUri(path, parameters);
+    final url = _makeUri(host, path, parameters);
     try {
       final request = await _client.getUrl(url);
       final responce = await request.close();
@@ -68,6 +92,7 @@ class ApiClient {
   }
 
   Future<T> _post<T>(
+    String host,
     String path,
     Map<String, dynamic>? bodyParameters,
     T Function(dynamic json) parser, [
@@ -79,7 +104,7 @@ class ApiClient {
       //   'password': password,
       //   'request_token': requestToken
       // };
-      final url = _makeUri(path, urlParameters);
+      final url = _makeUri(host, path, urlParameters);
       // final url = Uri.parse(
       //     '$_host/authentication/token/validate_with_login?api_key=$_apiKey');
 
@@ -111,7 +136,7 @@ class ApiClient {
       return token;
     };
 
-    final result = _get('/authentication/token/new', parser,
+    final result = _get(_host, '/authentication/token/new', parser,
         <String, dynamic>{'api_key': _apiKey});
     return result;
     // // _client.connectionTimeout = Duration.zero;
@@ -119,18 +144,38 @@ class ApiClient {
     // //final urlMin = Uri.parse('http://10.0.2.2:5000/todoitems');
   }
 
-  Future<dynamic> popularMovie(int page, String locale) async {
+  Future<PopularMovieResponce> popularMovie(int page, String locale) async {
     final parser = (dynamic json) {
-      // final jsonMap = json as Map<String, dynamic>;
-      // final token = jsonMap['request_token'] as String;
-      // return token;
-      return json;
+      final jsonMap = json as Map<String, dynamic>;
+      final responce = PopularMovieResponce.fromJson(jsonMap);
+      return responce;
     };
 
-    final result = _get<dynamic>('/movie/popular', parser, <String, dynamic>{
+    final result = _get(_host, '/movie/popular', parser, <String, dynamic>{
       'api_key': _apiKey,
       'page': page.toString(),
       'language': locale,
+    });
+    return result;
+  }
+
+  Future<PopularMovieResponce> searchMovie(
+    int page,
+    String locale,
+    String query,
+  ) async {
+    final parser = (dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final responce = PopularMovieResponce.fromJson(jsonMap);
+      return responce;
+    };
+
+    final result = _get(_host, '/search/movie', parser, <String, dynamic>{
+      'api_key': _apiKey,
+      'page': page.toString(),
+      'language': locale,
+      'query': query,
+      'include_adult': true.toString(),
     });
     return result;
   }
@@ -151,6 +196,7 @@ class ApiClient {
       'request_token': requestToken
     };
     final result = _post(
+      _host,
       '/authentication/token/validate_with_login',
       bodyParameters,
       parser,
@@ -169,6 +215,7 @@ class ApiClient {
     };
     final bodyParameters = <String, dynamic>{'request_token': requestToken};
     final result = _post(
+      _host,
       '/authentication/session/new',
       bodyParameters,
       parser,
@@ -177,9 +224,9 @@ class ApiClient {
     return result;
   }
 
-  Uri _makeUri(String path, [Map<String, dynamic>? parameters]) {
+  Uri _makeUri(String host, String path, [Map<String, dynamic>? parameters]) {
     // _client.connectionTimeout = Duration.zero;
-    final uri = Uri.parse('$_host$path');
+    final uri = Uri.parse('$host$path');
     if (parameters != null) {
       return uri.replace(queryParameters: parameters);
     } else {
