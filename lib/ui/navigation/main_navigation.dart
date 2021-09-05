@@ -9,6 +9,8 @@ import 'package:themoviedb/widgets/example_inherited/pass_data_to_child.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_widget.dart';
+import 'package:themoviedb/widgets/todo_details/todo_details_model.dart';
+import 'package:themoviedb/widgets/todo_details/todo_details_widget.dart';
 
 abstract class MainNavigationRouteNames {
   static const auth = 'auth';
@@ -18,6 +20,7 @@ abstract class MainNavigationRouteNames {
   static const jsonTest = '/json_test';
   static const passDataToChild = '/pass_data_to_child';
   static const inheritedNotifierExample = '/inherited_notifier_example';
+  static const todoDetails = '/todo_details';
 }
 
 class MainNavigation {
@@ -40,6 +43,11 @@ class MainNavigation {
       } else {
         return MovieDetailsWidget(movieId: 0);
       }
+    },
+    MainNavigationRouteNames.todoDetails: (context) {
+      final arguments = ModalRoute.of(context)!.settings.arguments;
+      final todoId = arguments is int ? arguments : 0;
+      return TodoDetailsWidget(todoId: todoId);
     },
     MainNavigationRouteNames.resetPassword: (context) =>
         const ResetPasswordWidget(),

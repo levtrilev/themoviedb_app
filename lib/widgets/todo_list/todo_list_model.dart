@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:themoviedb/domain/api_client.dart';
 import 'package:themoviedb/domain/entity/todo_item.dart';
+import 'package:themoviedb/ui/navigation/main_navigation.dart';
 
 class TodoListModel extends ChangeNotifier {
   final _apiClient = ApiClient();
@@ -18,7 +19,7 @@ class TodoListModel extends ChangeNotifier {
 
     try {
       final todos = await _apiClient.todoItemsGet();
-      print (todos);
+      print(todos);
       if (todos == null) return;
       _todoItems.clear();
       _todoItems.addAll(todos);
@@ -29,7 +30,7 @@ class TodoListModel extends ChangeNotifier {
     }
   }
 
-Future<void> searchTodoItems(String query) async {
+  Future<void> searchTodoItems(String query) async {
     searchDebounce?.cancel();
     searchDebounce = Timer(const Duration(seconds: 1), () async {
       final searchQuery = query.isNotEmpty ? query : null;
@@ -61,11 +62,11 @@ Future<void> searchTodoItems(String query) async {
     final id = _todoItems[index].id;
     print(id.toString());
     // To implement route: todoItemDetails
-    // Navigator.of(context)
-    //     .pushNamed(MainNavigationRouteNames.todoItemDetails, arguments: id);
+    Navigator.of(context)
+        .pushNamed(MainNavigationRouteNames.todoDetails, arguments: id);
   }
 
-  void loadTodoItems () {
+  void loadTodoItems() {
     _loadTodoItems();
   }
 

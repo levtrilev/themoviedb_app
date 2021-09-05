@@ -62,6 +62,16 @@ class ApiClient {
     return result;
   }
 
+    Future<TodoItem>? todoItemGet(int id) async {
+    final parser = (dynamic json) {
+      final responce = TodoItem.fromJson(json as Map<String, dynamic>);
+      return responce;
+    };
+
+    final result = _get(_hostMin, '/todoitems/${id.toString()}', parser);
+    return result;
+  }
+
   Future<String> auth({
     required String username,
     required String password,
