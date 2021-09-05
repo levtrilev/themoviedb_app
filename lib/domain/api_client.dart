@@ -38,16 +38,28 @@ class ApiClient {
 
   Future<List<TodoItem>?> minimalApiGet() async {
     final parser = (dynamic json) {
-        final jsonMapList = json.map((e) => e as Map<String, dynamic>);
-        final responce = jsonMapList.map((e) => TodoItem.fromJson(e)).toList();
-        return responce;
+      final jsonMapList = json.map((e) => e as Map<String, dynamic>);
+      final responce = jsonMapList.map((e) => TodoItem.fromJson(e)).toList();
+      return responce;
     };
-
     final result = await _get(_hostMin, '/todoitems', parser);
     return result;
     // // _client.connectionTimeout = Duration.zero;
     // final url = Uri.parse('$_host/authentication/token/new?api_key=$_apiKey');
     // //final urlMin = Uri.parse('http://10.0.2.2:5000/todoitems');
+  }
+
+  Future<List<TodoItem>>? todoItemsGet() async {
+    final parser = (dynamic json) {
+      final responce = (json as List<dynamic>)
+          .map((e) => TodoItem.fromJson(e as Map<String, dynamic>))
+          .toList();
+      return responce;
+    };
+
+    final result = _get(_hostMin, '/todoitems', parser);
+
+    return result;
   }
 
   Future<String> auth({
