@@ -14,7 +14,7 @@ class TodoDetailsModel extends ChangeNotifier {
 
     try {
       final todo = await _apiClient.todoItemGet(todoId);
-      print (todo);
+      print(todo);
       if (todo == null) return;
       _todoItem = todo;
       _isLoadingInProgress = false;
@@ -24,4 +24,13 @@ class TodoDetailsModel extends ChangeNotifier {
     }
   }
 
+  Future<int> createTodoItem(TodoItem todoItemToCreate) async {
+    try {
+      final createdTodoId =
+          await _apiClient.createTodoItem(todoItemToCreate: todoItemToCreate);
+      return createdTodoId;
+    } catch (e) {
+      return 0;
+    }
+  }
 }

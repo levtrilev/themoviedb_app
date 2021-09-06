@@ -202,6 +202,28 @@ class ApiClient {
     return result;
   }
 
+  Future<int> createTodoItem({
+    required TodoItem todoItemToCreate,
+  }) async {
+    final parser = (dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final createdId = jsonMap['id'] as int;
+      return createdId;
+    };
+    final bodyParameters = <String, dynamic>{
+      'id': 0,
+      'title': todoItemToCreate.title,
+      'isCompleted': todoItemToCreate.isCompleted
+    };
+    final result = _post(
+      _hostMin,
+      '/todoitems',
+      bodyParameters,
+      parser,
+    );
+    return result;
+  }
+
   Future<String> _validateUser({
     required String username,
     required String password,

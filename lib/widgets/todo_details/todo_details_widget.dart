@@ -3,7 +3,7 @@ import 'package:themoviedb/domain/entity/todo_item.dart';
 import 'package:themoviedb/widgets/todo_details/todo_details_model.dart';
 
 class TodoDetailsWidget extends StatefulWidget {
-  final todoId;
+  final int todoId;
   const TodoDetailsWidget({
     Key? key,
     required this.todoId,
@@ -69,6 +69,26 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
     });
   }
 
+  void updateTodoItem() {
+    //widget.todoItem.title = titleController.text;
+  }
+  void deleteTodoItem() {
+    //widget.todoItem.title = titleController.text;
+  }
+  void createTodoItem() {
+    final TodoItem todoItemToCreate = TodoItem(
+      id: 0,
+      title: titleController.text,
+      isCompleted: _completed,
+    );
+    context
+        .findAncestorStateOfType<_TodoDetailsWidgetState>()
+        ?.todoDetailsModel
+        .createTodoItem(todoItemToCreate);
+              Navigator.of(context).pop();
+              //context.findAncestorStateOfType<_TodoListWidgetState>()?.loadTodoItems();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +142,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
           FloatingActionButton(
             backgroundColor: Colors.red,
             tooltip: 'удалить',
-            onPressed: (){},
+            onPressed: () => deleteTodoItem(),
             child: Icon(Icons.delete),
           ),
           SizedBox(
@@ -130,8 +150,17 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
           ),
           FloatingActionButton(
             backgroundColor: Colors.green,
+            tooltip: 'создать',
+            onPressed: () => createTodoItem(),
+            child: Icon(Icons.create),
+          ),
+          SizedBox(
+            width: 40,
+          ),
+          FloatingActionButton(
+            backgroundColor: Colors.green,
             tooltip: 'сохранить',
-            onPressed: (){},
+            onPressed: () => updateTodoItem(),
             child: Icon(Icons.save),
           ),
         ],
