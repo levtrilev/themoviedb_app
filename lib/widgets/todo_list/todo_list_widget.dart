@@ -18,15 +18,14 @@ class TodoListWidget extends StatelessWidget {
           padding: EdgeInsets.only(top: 70),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: model.todoItems.length,
-          itemExtent: 5,
+          itemExtent: 110,
           itemBuilder: (BuildContext context, int index) {
-            model.showedTodoAtIndex(index);
             final todoItem = model.todoItems[index];
-            //final posterPath = movie.posterPath;
+            final isCompleted = todoItem.isCompleted.toString();
             return Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
-                vertical: 10,
+                vertical: 6,
               ),
               child: Stack(
                 children: [
@@ -47,7 +46,6 @@ class TodoListWidget extends StatelessWidget {
                       children: [
                         Image.network(
                           posterPath,
-                          //ApiClient.imageUrl(posterPath),
                           width: 95,
                         ),
                         SizedBox(
@@ -69,7 +67,7 @@ class TodoListWidget extends StatelessWidget {
                                 height: 5,
                               ),
                               Text(
-                                'Дата: сегодня',
+                                'Выполнено: $isCompleted',
                                 maxLines: 1,
                                 style: TextStyle(
                                   color: Colors.grey,
@@ -79,7 +77,7 @@ class TodoListWidget extends StatelessWidget {
                                 height: 20,
                               ),
                               Text(
-                                todoItem.id.toString(),
+                                todoItem.id.toString(), // movie.description,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -96,7 +94,10 @@ class TodoListWidget extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: () => model.onTodoItemTap(context, index),
+                      onTap: () => model.onTodoItemTap(
+                          // model.minApiTest()
+                          context,
+                          index),
                     ),
                   ),
                 ],
@@ -108,7 +109,7 @@ class TodoListWidget extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: TextField(
             //controller: _searchController,
-            onChanged: model.searchTodoItems,
+            //onChanged: model.searchTodoItems(query),
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white.withAlpha(235),

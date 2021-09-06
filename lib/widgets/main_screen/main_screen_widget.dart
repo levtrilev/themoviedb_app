@@ -6,9 +6,8 @@ import 'package:themoviedb/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/widgets/movie_list/movie_list_model.dart';
 import 'package:themoviedb/widgets/movie_list/movie_list_widget.dart';
 import 'package:themoviedb/widgets/paint_test/paint_test.dart';
-import 'package:themoviedb/widgets/todo_list/todo1_list_widget.dart';
-import 'package:themoviedb/widgets/todo_list/todo_list_model.dart';
 import 'package:themoviedb/widgets/todo_list/todo_list_widget.dart';
+import 'package:themoviedb/widgets/todo_list/todo_list_model.dart';
 
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({Key? key}) : super(key: key);
@@ -65,7 +64,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           //Example(),
           Center(child: PaintTestWidget()),
           NotifierProvider(
-              model: todoListModel, child: const Todo1ListWidget()),
+              model: todoListModel, child: const TodoListWidget()),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
