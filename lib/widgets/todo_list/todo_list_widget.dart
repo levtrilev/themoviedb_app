@@ -118,6 +118,16 @@ class TodoListWidget extends StatelessWidget {
             ),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(top: 610, left: 330),
+          child: OutlinedButton(
+            child: Text('new'),
+            onPressed: () => model.onTodoItemTap(
+                // model.minApiTest()
+                context,
+                -1), // -1 - create new todo
+          ),
+        )
       ],
     );
   }

@@ -62,7 +62,7 @@ class ApiClient {
     return result;
   }
 
-    Future<TodoItem>? todoItemGet(int id) async {
+  Future<TodoItem>? todoItemGet(int id) async {
     final parser = (dynamic json) {
       final responce = TodoItem.fromJson(json as Map<String, dynamic>);
       return responce;
@@ -70,6 +70,10 @@ class ApiClient {
 
     final result = _get(_hostMin, '/todoitems/${id.toString()}', parser);
     return result;
+  }
+
+  Future<bool>? todoItemDelete(int id) async {
+    return await _delete(_hostMin, '/todoitems/${id.toString()}');
   }
 
   Future<String> auth({
@@ -84,6 +88,31 @@ class ApiClient {
     );
     final sessionId = await _makeSession(requestToken: validToken);
     return sessionId;
+  }
+
+  Future<bool> _delete<bool>(
+    String host,
+    String path,
+  ) async {
+    final url = _makeUri(
+      host,
+      path,
+    );
+    try {
+      var deleted;
+      final request = await _client.deleteUrl(url);
+      await request.close().then((responce) {
+        responce.statusCode == 204 ? deleted = true : deleted = false;
+      });
+      return deleted;
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.Network);
+    } on ApiClientException {
+      rethrow;
+    } catch (e) {
+      print(e.toString());
+      throw ApiClientException(ApiClientExceptionType.Other);
+    }
   }
 
   Future<T> _get<T>(
@@ -108,6 +137,30 @@ class ApiClient {
       rethrow;
     } catch (e) {
       print(e.toString());
+      //rethrow;
+      throw ApiClientException(ApiClientExceptionType.Other);
+    }
+  }
+
+  Future<bool> _put(
+    String host,
+    String path,
+    Map<String, dynamic>? bodyParameters, [
+    Map<String, dynamic>? urlParameters,
+  ]) async {
+    try {
+      final url = _makeUri(host, path, urlParameters);
+      final request = await _client.putUrl(url);
+      request.headers.contentType = ContentType.json;
+      request.write(jsonEncode(bodyParameters));
+      final responce = await request.close();
+      if (responce.statusCode == 204) return true;
+      return false;
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.Network);
+    } on ApiClientException {
+      rethrow;
+    } catch (e) {
       //rethrow;
       throw ApiClientException(ApiClientExceptionType.Other);
     }
@@ -222,6 +275,22 @@ class ApiClient {
       parser,
     );
     return result;
+  }
+
+  Future<int> updateTodoItem({
+    required TodoItem todoItemToUpdate,
+  }) async {
+    final bodyParameters = <String, dynamic>{
+      'id': 0, //todoItemToUpdate.id,
+      'title': todoItemToUpdate.title,
+      'isCompleted': todoItemToUpdate.isCompleted
+    };
+    final success = await _put(
+      _hostMin,
+      '/todoitems/${todoItemToUpdate.id.toString()}',
+      bodyParameters,
+    );
+    return success ? todoItemToUpdate.id : 0;
   }
 
   Future<String> _validateUser({

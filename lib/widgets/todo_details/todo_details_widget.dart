@@ -69,23 +69,44 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
     });
   }
 
-  void updateTodoItem() {
-    //widget.todoItem.title = titleController.text;
+  Future<void> updateTodoItem() async {
+    if (widget.todoItem.id == 0) {
+      await createTodoItem();
+      return;
+    }
+
+    final TodoItem todoItemToUpdate = TodoItem(
+      id: widget.todoItem.id,
+      title: titleController.text,
+      isCompleted: _completed,
+    );
+    
+    final updatedTodoItemId = await context
+        .findAncestorStateOfType<_TodoDetailsWidgetState>()
+        ?.todoDetailsModel
+        .updateTodoItem(todoItemToUpdate);
+              Navigator.of(context).pop(updatedTodoItemId);
+              //context.findAncestorStateOfType<_TodoListWidgetState>()?.loadTodoItems();
   }
-  void deleteTodoItem() {
-    //widget.todoItem.title = titleController.text;
+
+  Future<void> deleteTodoItem() async {
+    await context
+        .findAncestorStateOfType<_TodoDetailsWidgetState>()
+        ?.todoDetailsModel
+        .deleteTodoItem(widget.todoItem.id);
+              Navigator.of(context).pop(-1);
   }
-  void createTodoItem() {
+  Future<void> createTodoItem() async {
     final TodoItem todoItemToCreate = TodoItem(
       id: 0,
       title: titleController.text,
       isCompleted: _completed,
     );
-    context
+    final createdTodoItemId = await context
         .findAncestorStateOfType<_TodoDetailsWidgetState>()
         ?.todoDetailsModel
         .createTodoItem(todoItemToCreate);
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(createdTodoItemId);
               //context.findAncestorStateOfType<_TodoListWidgetState>()?.loadTodoItems();
   }
 
@@ -143,6 +164,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
             backgroundColor: Colors.red,
             tooltip: 'удалить',
             onPressed: () => deleteTodoItem(),
+            heroTag: null,
             child: Icon(Icons.delete),
           ),
           SizedBox(
@@ -152,6 +174,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
             backgroundColor: Colors.green,
             tooltip: 'создать',
             onPressed: () => createTodoItem(),
+            heroTag: null,
             child: Icon(Icons.create),
           ),
           SizedBox(
@@ -161,6 +184,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
             backgroundColor: Colors.green,
             tooltip: 'сохранить',
             onPressed: () => updateTodoItem(),
+            heroTag: null,
             child: Icon(Icons.save),
           ),
         ],

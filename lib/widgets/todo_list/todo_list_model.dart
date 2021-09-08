@@ -41,29 +41,21 @@ class TodoListModel extends ChangeNotifier {
       if (_isLoadingInProgress) return;
       _isLoadingInProgress = true;
 
-      //final nextPage = 1;
-      try {
-        // To implement:
-        // final moviesResponce =
-        //     await _apiClient.searchMovie(nextPage, 'ru-RU', searchQuery);
-        // _movies.clear();
-        // _movies.addAll(moviesResponce.movies);
-        // _isLoadingInProgress = false;
-        // _currentPage = moviesResponce.page;
-        // _totalPages = moviesResponce.totalPages;
-        // notifyListeners();
-      } catch (e) {
+      try {} catch (e) {
         _isLoadingInProgress = false;
       }
     });
   }
 
-  void onTodoItemTap(BuildContext context, int index) {
-    final id = _todoItems[index].id;
+  void onTodoItemTap(BuildContext context, int index) async {
+    // index = -1 means to create new todo => call todoDetails(id = 0)
+    final id = index > 0 ? _todoItems[index].id : 0;
     print(id.toString());
-    // To implement route: todoItemDetails
-    Navigator.of(context)
+    final createdTodoItemId = await Navigator.of(context)
         .pushNamed(MainNavigationRouteNames.todoDetails, arguments: id);
+    if (createdTodoItemId != null &&
+        (createdTodoItemId as int > 0 || createdTodoItemId == -1))
+      _loadTodoItems();
   }
 
   void loadTodoItems() {

@@ -9,6 +9,16 @@ class TodoDetailsModel extends ChangeNotifier {
   var _isLoadingInProgress = false;
 
   Future<void> loadTodoItem(int todoId) async {
+    if (todoId == 0) {
+      // todoId == 0 means to create a new todo
+      final newTodo = TodoItem(
+          id: 0,
+          title: '',
+          isCompleted: false,
+        );
+        _todoItem = newTodo;
+      return Future.delayed(const Duration(milliseconds: 20), () => newTodo);
+    }
     if (_isLoadingInProgress) return;
     _isLoadingInProgress = true;
 
@@ -32,5 +42,26 @@ class TodoDetailsModel extends ChangeNotifier {
     } catch (e) {
       return 0;
     }
+  }
+
+  Future<int> updateTodoItem(TodoItem todoItemToUpdate) async {
+    try {
+      final updatedTodoId =
+          await _apiClient.updateTodoItem(todoItemToUpdate: todoItemToUpdate);
+      return updatedTodoId;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  Future<bool> deleteTodoItem(int todoId) async {
+    try {
+      await _apiClient.todoItemDelete(todoId)?.then((deleted) {
+        return deleted;
+      });
+    } catch (e) {
+      return false;
+    }
+    return false;
   }
 }
