@@ -20,18 +20,18 @@ class _JsonTestWidgetState extends State<JsonTestWidget> {
   void initState() {
     List<Person> persons = [];
     super.initState();
-    final String _jsonExample =
+    const String _jsonExample =
         '''[{"name": "Иван", "surname": "Иванов"}, {"name": "Петр", "surname": "Петров"}]''';
         try {
           final json = jsonDecode(_jsonExample) as List<dynamic>;
           persons = json.map((dynamic e) => Person.fromJson(e as Map<String, dynamic>)).toList();
-          print(persons);
         } catch (error) {
+          // ignore: avoid_print
           print(error);
         }
   final jsonResult = jsonEncode(persons.map((e) => e.toJson()).toList());
+  // ignore: avoid_print
   print(jsonResult);
-
   }
 
   @override

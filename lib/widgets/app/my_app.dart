@@ -16,21 +16,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'themoviedb.org client',
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale('ru', 'RU'), // Russian, country code
         Locale('en', 'EN'), // English, no country code
       ],
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: AppColors.mainDarkBlue,
         ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: AppColors.mainDarkBlue,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey,
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       routes: mainNavigation.routs,
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<void>(builder: (context) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: Text('Произошла ошибка навигации')),
           );
         });

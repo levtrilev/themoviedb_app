@@ -13,11 +13,11 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'TMDB',
         ),
       ),
-      body: Center(
+      body: const Center(
         child: InputFormWidget(),
       ),
     );
@@ -45,7 +45,7 @@ class InputFormWidget extends StatelessWidget {
               helperMaxLines: 1,
               //errorText: 'Your input value is not correct!',
               errorMaxLines: 2,
-              prefixIcon: Icon(Icons.phone),
+              prefixIcon: const Icon(Icons.phone),
               prefixText: '+ 7',
               //floatingLabelBehavior: FloatingLabelBehavior.always,
               //isCollapsed: true,
@@ -54,32 +54,32 @@ class InputFormWidget extends StatelessWidget {
               // counter: Text('3/10'),
               filled: true,
               fillColor: Colors.green[100],
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.black,
                   width: 1,
                 ),
               ),
-              disabledBorder: OutlineInputBorder(
+              disabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.grey,
                   width: 1,
                 ),
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.blue,
                   width: 2,
                 ),
               ),
               focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                   width: 2,
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
-              errorBorder: OutlineInputBorder(
+              errorBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.red,
                   width: 1,
@@ -88,7 +88,7 @@ class InputFormWidget extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            child: Text('Назад'),
+            child: const Text('Назад'),
             onPressed: () {
               if (Navigator.of(context).canPop()) {
                 Navigator.of(context).pop();
@@ -96,12 +96,12 @@ class InputFormWidget extends StatelessWidget {
             },
           ),
           ElevatedButton(
-            child: Text('Json test'),
+            child: const Text('Json test'),
             onPressed: () {
               Navigator.of(context).pushNamed('/json_test');
             },
           ),
-          Image(image: AppImages.reset_password),
+          const Image(image: AppImages.resetPassword),
         ],
       ),
     );

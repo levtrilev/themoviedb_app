@@ -9,15 +9,15 @@ class MovieDetailsMainInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: const [
         _TopPosterWidget(),
         Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: EdgeInsets.all(18.0),
           child: _MovieNameWidget(),
         ),
         _ScoreWidget(),
         Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 70,
           ),
@@ -37,18 +37,18 @@ class _TopPosterWidget extends StatelessWidget {
     return Stack(
       children: [
         Row(
-          children: [
+          children: const [
             SizedBox(
               width: 50,
             ),
-            Expanded(child: Image(image: AppImages.godfather_mainpic_min432)),
+            Expanded(child: Image(image: AppImages.godfatherMainpicMin432)),
           ],
         ),
-        Positioned(
+        const Positioned(
           top: 16,
           left: 16,
           bottom: 16,
-          child: Image(image: AppImages.christny_father),
+          child: Image(image: AppImages.christnyFather),
         ),
       ],
     );
@@ -62,7 +62,7 @@ class _MovieNameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       maxLines: 3,
-      text: TextSpan(
+      text: const TextSpan(
         children: [
           TextSpan(
               text: 'Tom Clancy`s Without Remorse',
@@ -90,13 +90,13 @@ class _ScoreWidget extends StatelessWidget {
           onPressed: () {},
           child: Row(
             children: [
-              Container(
+              SizedBox(
                 width: 55,
                 height: 55,
                 child: RadialPercentWidget(
                   child: Text(
                     '${(100 * rating).toStringAsFixed(0)}%',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                         fontWeight: FontWeight.w400),
@@ -109,7 +109,7 @@ class _ScoreWidget extends StatelessWidget {
                   lineMargin: 3,
                 ),
               ),
-              Text('User Score'),
+              const Text('User Score'),
             ],
           ),
         ),
@@ -121,7 +121,7 @@ class _ScoreWidget extends StatelessWidget {
         TextButton(
           onPressed: () {},
           child: Row(
-            children: [
+            children: const [
               Icon(Icons.play_arrow),
               Text('Play Trailer'),
             ],
@@ -137,7 +137,7 @@ class _SummaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return const Text(
       'R, 04/29/21 (US) 1h 49m  Action, Adventure, Thriller, War',
       style: TextStyle(fontSize: 16, color: Colors.white),
       textAlign: TextAlign.center,

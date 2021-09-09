@@ -19,7 +19,6 @@ class TodoListModel extends ChangeNotifier {
 
     try {
       final todos = await _apiClient.todoItemsGet();
-      print(todos);
       if (todos == null) return;
       _todoItems.clear();
       _todoItems.addAll(todos);
@@ -50,12 +49,12 @@ class TodoListModel extends ChangeNotifier {
   void onTodoItemTap(BuildContext context, int index) async {
     // index = -1 means to create new todo => call todoDetails(id = 0)
     final id = index > 0 ? _todoItems[index].id : 0;
-    print(id.toString());
     final createdTodoItemId = await Navigator.of(context)
         .pushNamed(MainNavigationRouteNames.todoDetails, arguments: id);
     if (createdTodoItemId != null &&
-        (createdTodoItemId as int > 0 || createdTodoItemId == -1))
+        (createdTodoItemId as int > 0 || createdTodoItemId == -1)) {
       _loadTodoItems();
+    }
   }
 
   void loadTodoItems() {

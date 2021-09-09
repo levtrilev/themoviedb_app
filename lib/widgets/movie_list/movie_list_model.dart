@@ -60,7 +60,7 @@ class MovieListModel extends ChangeNotifier {
       if (_isLoadingInProgress) return;
       _isLoadingInProgress = true;
 
-      final nextPage = 1;
+      const nextPage = 1;
       try {
         final moviesResponce =
             await _apiClient.searchMovie(nextPage, 'ru-RU', searchQuery);
@@ -77,8 +77,8 @@ class MovieListModel extends ChangeNotifier {
   }
 
   Future<void> minApiTest() async {
+    // ignore: unused_local_variable
     final minApiResponce = await _apiClient.minimalApiGet();
-    print(minApiResponce);
   }
 
   void onMovieTap(BuildContext context, int index) {

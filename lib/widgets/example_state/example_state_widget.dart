@@ -32,7 +32,7 @@ class _ExampleState extends State<Example> {
 }
 
 class GreenBox extends StatefulWidget {
-  GreenBox({Key? key}) : super(key: key);
+  const GreenBox({Key? key}) : super(key: key);
 
   @override
   _GreenBoxState createState() => _GreenBoxState();
@@ -46,8 +46,8 @@ class _GreenBoxState extends State<GreenBox> {
       child: Container(
         color: Colors.green,
         height: 100,
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
+        child: const Padding(
+          padding: EdgeInsets.all(18.0),
           child: TextField(),
           // child: Text('data'),
         ),

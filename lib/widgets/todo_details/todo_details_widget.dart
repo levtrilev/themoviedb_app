@@ -25,11 +25,11 @@ class _TodoDetailsWidgetState extends State<TodoDetailsWidget> {
       future: todoDetailsModel.loadTodoItem(widget.todoId),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: Text('Please wait its loading...'));
+          return const Center(child: Text('Please wait its loading...'));
         } else {
-          if (snapshot.hasError)
+          if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          else {
+          } else {
             final todoItem = todoDetailsModel.todoItem;
             return TodoDetailsScreenWidget(todoItem: todoItem);
             //return Center(child: new Text('${snapshot.data}'));
@@ -42,7 +42,7 @@ class _TodoDetailsWidgetState extends State<TodoDetailsWidget> {
 }
 
 class TodoDetailsScreenWidget extends StatefulWidget {
-  TodoDetailsScreenWidget({
+  const TodoDetailsScreenWidget({
     Key? key,
     required this.todoItem,
   }) : super(key: key);
@@ -80,13 +80,13 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
       title: titleController.text,
       isCompleted: _completed,
     );
-    
+
     final updatedTodoItemId = await context
         .findAncestorStateOfType<_TodoDetailsWidgetState>()
         ?.todoDetailsModel
         .updateTodoItem(todoItemToUpdate);
-              Navigator.of(context).pop(updatedTodoItemId);
-              //context.findAncestorStateOfType<_TodoListWidgetState>()?.loadTodoItems();
+    Navigator.of(context).pop(updatedTodoItemId);
+    //context.findAncestorStateOfType<_TodoListWidgetState>()?.loadTodoItems();
   }
 
   Future<void> deleteTodoItem() async {
@@ -94,8 +94,9 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
         .findAncestorStateOfType<_TodoDetailsWidgetState>()
         ?.todoDetailsModel
         .deleteTodoItem(widget.todoItem.id);
-              Navigator.of(context).pop(-1);
+    Navigator.of(context).pop(-1);
   }
+
   Future<void> createTodoItem() async {
     final TodoItem todoItemToCreate = TodoItem(
       id: 0,
@@ -106,26 +107,26 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
         .findAncestorStateOfType<_TodoDetailsWidgetState>()
         ?.todoDetailsModel
         .createTodoItem(todoItemToCreate);
-              Navigator.of(context).pop(createdTodoItemId);
-              //context.findAncestorStateOfType<_TodoListWidgetState>()?.loadTodoItems();
+    Navigator.of(context).pop(createdTodoItemId);
+    //context.findAncestorStateOfType<_TodoListWidgetState>()?.loadTodoItems();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'TODO Details',
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
       body: CustomMultiChildLayout(
-        delegate: FormLayoutDelegate(position: Offset(0, 0)),
+        delegate: FormLayoutDelegate(position: const Offset(0, 0)),
         children: [
           LayoutId(
             id: 'Title',
@@ -133,7 +134,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
               controller: titleController,
               keyboardType: TextInputType.text,
               maxLines: 5,
-              decoration: InputDecoration(border: OutlineInputBorder()),
+              decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
           ),
           LayoutId(
@@ -142,7 +143,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
           ),
           LayoutId(
             id: 'isCompletedLabel',
-            child: Text('Выполнено: '),
+            child: const Text('Выполнено: '),
           ),
           LayoutId(
               id: 'isCompleted',
@@ -165,19 +166,9 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
             tooltip: 'удалить',
             onPressed: () => deleteTodoItem(),
             heroTag: null,
-            child: Icon(Icons.delete),
+            child: const Icon(Icons.delete),
           ),
-          SizedBox(
-            width: 40,
-          ),
-          FloatingActionButton(
-            backgroundColor: Colors.green,
-            tooltip: 'создать',
-            onPressed: () => createTodoItem(),
-            heroTag: null,
-            child: Icon(Icons.create),
-          ),
-          SizedBox(
+          const SizedBox(
             width: 40,
           ),
           FloatingActionButton(
@@ -185,7 +176,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
             tooltip: 'сохранить',
             onPressed: () => updateTodoItem(),
             heroTag: null,
-            child: Icon(Icons.save),
+            child: const Icon(Icons.save),
           ),
         ],
       ),
@@ -207,25 +198,25 @@ class FormLayoutDelegate extends MultiChildLayoutDelegate {
     if (hasChild('Title')) {
       leadingSize = layoutChild(
         'Title', // The id once again.
-        BoxConstraints(
+        const BoxConstraints(
           maxWidth: 300,
           maxHeight: 400,
         ),
       );
       // No need to position this child if we want to have it at Offset(0, 0).
-      positionChild('Title', Offset(90, 40));
+      positionChild('Title', const Offset(90, 40));
     }
     if (hasChild('id')) {
       leadingSize = layoutChild('id', BoxConstraints.loose(size));
-      positionChild('id', Offset(30, 16));
+      positionChild('id', const Offset(30, 16));
     }
     if (hasChild('isCompletedLabel')) {
       leadingSize = layoutChild('isCompletedLabel', BoxConstraints.loose(size));
-      positionChild('isCompletedLabel', Offset(90, 16));
+      positionChild('isCompletedLabel', const Offset(90, 16));
     }
     if (hasChild('isCompleted')) {
       leadingSize = layoutChild('isCompleted', BoxConstraints.loose(size));
-      positionChild('isCompleted', Offset(162, 0));
+      positionChild('isCompleted', const Offset(162, 0));
     }
   }
 

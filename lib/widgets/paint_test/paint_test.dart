@@ -9,7 +9,7 @@ class PaintTestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 100,
         ),
         Container(
@@ -24,10 +24,10 @@ class PaintTestWidget extends StatelessWidget {
             painter: MyTestCustomPainter(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 100,
         ),
-        Container(
+        SizedBox(
           width: 100,
           height: 100,
           child: _RadialPercentWidget(
@@ -39,7 +39,7 @@ class PaintTestWidget extends StatelessWidget {
             lineMargin: 6,
             child: Text(
               '${(100 * rating).toStringAsFixed(0)}%',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.w700),
@@ -169,9 +169,9 @@ class MyTestCustomPainter extends CustomPainter {
     paint.strokeWidth = 3;
     canvas.drawCircle(Offset(size.width / 2, size.height / 2), 30, paint);
     paint.color = Colors.blue;
-    canvas.drawRect(Rect.fromLTWH(10, 10, 50, 40), paint);
+    canvas.drawRect(const Rect.fromLTWH(10, 10, 50, 40), paint);
     paint.strokeWidth = 10;
-    canvas.drawRect(Offset.zero & Size(30, 30), paint);
+    canvas.drawRect(Offset.zero & const Size(30, 30), paint);
   }
 
   @override

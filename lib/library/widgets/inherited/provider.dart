@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NotifierProvider<Model extends ChangeNotifier> extends InheritedNotifier {
   final Model model;
-  NotifierProvider({
+  const NotifierProvider({
     Key? key,
     required this.model,
     required this.child,
@@ -12,6 +12,7 @@ class NotifierProvider<Model extends ChangeNotifier> extends InheritedNotifier {
           child: child,
         );
 
+  // ignore: annotate_overrides, overridden_fields
   final Widget child;
 
   static Model? watch<Model extends ChangeNotifier>(BuildContext context) {
@@ -30,8 +31,9 @@ class NotifierProvider<Model extends ChangeNotifier> extends InheritedNotifier {
 
 class Provider<Model> extends InheritedWidget {
   final Model model;
+  // ignore: annotate_overrides, overridden_fields
   final Widget child;
-  Provider({
+  const Provider({
     Key? key,
     required this.model,
     required this.child,

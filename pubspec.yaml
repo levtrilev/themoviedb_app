@@ -22,7 +22,7 @@ environment:
 
 dependencies:
   json_annotation: ^4.0.1
-  mockito: ^4.1.1
+  mockito: ^5.0.15
   flutter:
     sdk: flutter
   flutter_secure_storage: ^4.2.1

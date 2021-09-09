@@ -12,11 +12,13 @@ class Movie {
   final String overview;
   @JsonKey(fromJson: _parseDateFromString)
   final DateTime? releaseDate;
+  // ignore: non_constant_identifier_names
   final List<int> genre_ids;
   final int id;
   final String originalTitle;
   final String originalLanguage;
   final String title;
+  // ignore: non_constant_identifier_names
   final String? backdrop_path;
   final double popularity;
   final int voteCount;
@@ -28,11 +30,13 @@ class Movie {
     required this.adult,
     required this.overview,
     required this.releaseDate,
+    // ignore: non_constant_identifier_names
     required this.genre_ids,
     required this.id,
     required this.originalTitle,
     required this.originalLanguage,
     required this.title,
+    // ignore: non_constant_identifier_names
     required this.backdrop_path,
     required this.popularity,
     required this.voteCount,

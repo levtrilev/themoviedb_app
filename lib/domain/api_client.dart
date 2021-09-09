@@ -16,7 +16,7 @@ import 'entity/popular_movie_responce.dart'; // for mobile (non-web)
 // 6. Сервер ответил ожидаемой ошибкой
 */
 
-enum ApiClientExceptionType { Network, Auth, ApiKey, Other, Token }
+enum ApiClientExceptionType { network, auth, apiKey, other, token }
 
 class ApiClientException implements Exception {
   final ApiClientExceptionType type;
@@ -37,6 +37,7 @@ class ApiClient {
   }
 
   Future<List<TodoItem>?> minimalApiGet() async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final jsonMapList = json.map((e) => e as Map<String, dynamic>);
       final responce = jsonMapList.map((e) => TodoItem.fromJson(e)).toList();
@@ -50,6 +51,7 @@ class ApiClient {
   }
 
   Future<List<TodoItem>>? todoItemsGet() async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final responce = (json as List<dynamic>)
           .map((e) => TodoItem.fromJson(e as Map<String, dynamic>))
@@ -63,6 +65,7 @@ class ApiClient {
   }
 
   Future<TodoItem>? todoItemGet(int id) async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final responce = TodoItem.fromJson(json as Map<String, dynamic>);
       return responce;
@@ -98,20 +101,20 @@ class ApiClient {
       host,
       path,
     );
+    bool deleted = false as bool;
     try {
-      var deleted;
+      
       final request = await _client.deleteUrl(url);
       await request.close().then((responce) {
-        responce.statusCode == 204 ? deleted = true : deleted = false;
+        responce.statusCode == 204 ? deleted = true as bool : deleted = false as bool;
       });
       return deleted;
     } on SocketException {
-      throw ApiClientException(ApiClientExceptionType.Network);
+      throw ApiClientException(ApiClientExceptionType.network);
     } on ApiClientException {
       rethrow;
     } catch (e) {
-      print(e.toString());
-      throw ApiClientException(ApiClientExceptionType.Other);
+      throw ApiClientException(ApiClientExceptionType.other);
     }
   }
 
@@ -132,13 +135,12 @@ class ApiClient {
       // final token = json['request_token'] as String;
       // return token;
     } on SocketException {
-      throw ApiClientException(ApiClientExceptionType.Network);
+      throw ApiClientException(ApiClientExceptionType.network);
     } on ApiClientException {
       rethrow;
     } catch (e) {
-      print(e.toString());
       //rethrow;
-      throw ApiClientException(ApiClientExceptionType.Other);
+      throw ApiClientException(ApiClientExceptionType.other);
     }
   }
 
@@ -157,12 +159,12 @@ class ApiClient {
       if (responce.statusCode == 204) return true;
       return false;
     } on SocketException {
-      throw ApiClientException(ApiClientExceptionType.Network);
+      throw ApiClientException(ApiClientExceptionType.network);
     } on ApiClientException {
       rethrow;
     } catch (e) {
       //rethrow;
-      throw ApiClientException(ApiClientExceptionType.Other);
+      throw ApiClientException(ApiClientExceptionType.other);
     }
   }
 
@@ -195,16 +197,17 @@ class ApiClient {
       // final token = json['request_token'] as String;
       // return token;
     } on SocketException {
-      throw ApiClientException(ApiClientExceptionType.Network);
+      throw ApiClientException(ApiClientExceptionType.network);
     } on ApiClientException {
       rethrow;
     } catch (_) {
       //rethrow;
-      throw ApiClientException(ApiClientExceptionType.Other);
+      throw ApiClientException(ApiClientExceptionType.other);
     }
   }
 
   Future<String> _makeToken() async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final token = jsonMap['request_token'] as String;
@@ -220,6 +223,7 @@ class ApiClient {
   }
 
   Future<PopularMovieResponce> popularMovie(int page, String locale) async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final responce = PopularMovieResponce.fromJson(jsonMap);
@@ -239,6 +243,7 @@ class ApiClient {
     String locale,
     String query,
   ) async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final responce = PopularMovieResponce.fromJson(jsonMap);
@@ -258,6 +263,7 @@ class ApiClient {
   Future<int> createTodoItem({
     required TodoItem todoItemToCreate,
   }) async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final createdId = jsonMap['id'] as int;
@@ -298,6 +304,7 @@ class ApiClient {
     required String password,
     required String requestToken,
   }) async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final token = jsonMap['request_token'] as String;
@@ -321,6 +328,7 @@ class ApiClient {
   Future<String> _makeSession({
     required String requestToken,
   }) async {
+    // ignore: prefer_function_declarations_over_variables
     final parser = (dynamic json) {
       final jsonMap = json as Map<String, dynamic>;
       final sessionId = jsonMap['session_id'] as String;
@@ -355,13 +363,13 @@ class ApiClient {
       final code = status is int ? status : 0;
       if (code == 30) {
         // 30 - неверный логин-пароль 7 - невнрный ApiKey 33 - неверный токен
-        throw ApiClientException(ApiClientExceptionType.Auth);
+        throw ApiClientException(ApiClientExceptionType.auth);
       } else if (code == 7) {
-        throw ApiClientException(ApiClientExceptionType.ApiKey);
+        throw ApiClientException(ApiClientExceptionType.apiKey);
       } else if (code == 33) {
-        throw ApiClientException(ApiClientExceptionType.Token);
+        throw ApiClientException(ApiClientExceptionType.token);
       } else {
-        throw ApiClientException(ApiClientExceptionType.Other);
+        throw ApiClientException(ApiClientExceptionType.other);
       }
     }
   }

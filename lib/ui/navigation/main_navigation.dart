@@ -40,7 +40,7 @@ class MainNavigation {
       if (arguments is int) {
         return MovieDetailsWidget(movieId: arguments);
       } else {
-        return MovieDetailsWidget(movieId: 0);
+        return const MovieDetailsWidget(movieId: 0);
       }
     },
     MainNavigationRouteNames.todoDetails: (context) {

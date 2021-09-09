@@ -12,7 +12,7 @@ class AuthModel extends ChangeNotifier {
   final loginTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
-  String? _errorMessage = null;
+  String? _errorMessage;
   bool _isAuthProgress = false;
 
   String? get errorMessage => _errorMessage;
@@ -38,21 +38,21 @@ class AuthModel extends ChangeNotifier {
       );
     } on ApiClientException catch (e) {
       switch (e.type) {
-        case ApiClientExceptionType.Network:
+        case ApiClientExceptionType.network:
           _errorMessage = 'Сервер недоступен! Проверьте соединение.';
           break;
-        case ApiClientExceptionType.Auth:
+        case ApiClientExceptionType.auth:
           _errorMessage = 'Неправильный логин пароль!';
           break;
-        case ApiClientExceptionType.Other:
+        case ApiClientExceptionType.other:
           _errorMessage =
               'Произошла ошибка (ApiClientExceptionType.Other) ошибка: ${e.toString()}- попробуйде еще раз!';
           break;
-        case ApiClientExceptionType.ApiKey:
+        case ApiClientExceptionType.apiKey:
           _errorMessage =
               'Произошла ошибка - неверный ApiKey!';
           break;
-        case ApiClientExceptionType.Token:
+        case ApiClientExceptionType.token:
           _errorMessage =
               'Произошла ошибка - неверный request token!';
           break;

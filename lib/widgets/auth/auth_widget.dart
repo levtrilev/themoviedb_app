@@ -16,18 +16,18 @@ class _AuthWidgetState extends State<AuthWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Login to your account')),
+        title: const Center(child: Text('Login to your account')),
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          children: const [
             Padding(
-              padding: const EdgeInsets.fromLTRB(24, 12, 24, 10),
+              padding: EdgeInsets.fromLTRB(24, 12, 24, 10),
             ),
             SizedBox(
               height: 12,
             ),
-            const _AuthForm(),
+            _AuthForm(),
             Divider(
               thickness: 2,
             ),
@@ -78,7 +78,7 @@ class _AuthWidgetState extends State<AuthWidget> {
 class _AuthForm extends StatelessWidget {
   const _AuthForm({Key? key}) : super(key: key);
 
-  void _reset_password() {
+  void resetPassword() {
     // Navigator.of(context).pushNamed('/reset_password');
   }
 
@@ -92,7 +92,7 @@ class _AuthForm extends StatelessWidget {
     return Column(children: [
       ...[
         const _ErrorMessageWidget(),
-        SizedBox(
+        const SizedBox(
           height: 8,
         )
       ],
@@ -100,7 +100,7 @@ class _AuthForm extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(24, 12, 24, 6),
         child: TextField(
           obscureText: false,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Username',
             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -113,7 +113,7 @@ class _AuthForm extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(24, 6, 24, 6),
         child: TextField(
           obscureText: true,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Password',
             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -128,29 +128,29 @@ class _AuthForm extends StatelessWidget {
           children: [
             // Text(
             //     'Нажимая кнопку «Зарегистрироваться» ниже, я подтверждаю, что я прочитал и согласен с Условиями использования TMDb и Политикой конфиденциальности.'),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Row(
               children: [
-                _AuthButtonWidget(),
-                SizedBox(width: 16),
+                const _AuthButtonWidget(),
+                const SizedBox(width: 16),
                 TextButton(
                   style: ButtonStyle(
                       textStyle: MaterialStateProperty.all(
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   )),
-                  child: Text('Reset password'),
-                  onPressed: _reset_password,
+                  child: const Text('Reset password'),
+                  onPressed: resetPassword,
                 ), TextButton(
                   style: ButtonStyle(
                       textStyle: MaterialStateProperty.all(
-                    TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                   )),
-                  child: Text('Register'),
+                  child: const Text('Register'),
                   onPressed: (){},
                 )
               ],
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
           ],
         ),
       ),
@@ -168,11 +168,11 @@ class _AuthButtonWidget extends StatelessWidget {
     final model = NotifierProvider.watch<AuthModel>(context);
     final onPressed =
         model?.canStartAuth == true ? () => model?.auth(context) : null;
-        final child = model?.isAuthProgress == true ? CircularProgressIndicator() : Text('Login');
+        final child = model?.isAuthProgress == true ? const CircularProgressIndicator() : const Text('Login');
     return ElevatedButton(
       style: ButtonStyle(
           textStyle: MaterialStateProperty.all(
-        TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+        const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       )),
       child: child,
       onPressed: onPressed,
@@ -191,7 +191,7 @@ class _ErrorMessageWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Text(
         errorMessage,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.red,
           fontSize: 18,
         ),
@@ -213,17 +213,17 @@ class GreetingRow extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 32.0),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 32.0),
             child: Icon(Icons.check),
           ),
-          SizedBox(
+          const SizedBox(
             width: 6,
           ),
           Expanded(
               child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
             ),
           )),

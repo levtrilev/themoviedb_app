@@ -10,13 +10,13 @@ class MovieDetailsScreenCastWidget extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          Text(
+          const Text(
             'Series Cast',
             style: TextStyle(
               fontSize: 20,
             ),
           ),
-          Container(
+          SizedBox(
             height: 260,
             child: Scrollbar(
               child: ListView.builder(
@@ -31,22 +31,22 @@ class MovieDetailsScreenCastWidget extends StatelessWidget {
                         color: Colors.white,
                         border:
                             Border.all(color: Colors.black.withOpacity(0.2)),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
                         boxShadow: [
                           BoxShadow(
                               color: Colors.black.withOpacity(0.2),
                               blurRadius: 8,
-                              offset: Offset(0, 2)),
+                              offset: const Offset(0, 2)),
                         ],
                       ),
                       child: ClipRRect(
                         clipBehavior: Clip.hardEdge,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
                         child: Column(
-                          children: [
-                            Image(image: AppImages.christny_father),
+                          children: const [
+                            Image(image: AppImages.christnyFather),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: EdgeInsets.all(8.0),
                               child: Text(
                                 'Marlon Brando',
                                 maxLines: 2,
@@ -57,7 +57,7 @@ class MovieDetailsScreenCastWidget extends StatelessWidget {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                                  EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
                                 'Don Vito Corleone',
                                 maxLines: 2,
@@ -74,7 +74,7 @@ class MovieDetailsScreenCastWidget extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {},
-            child: Text(
+            child: const Text(
               'Full Cast & Crew',
               style: TextStyle(
                 fontSize: 20,

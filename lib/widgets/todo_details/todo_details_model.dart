@@ -24,7 +24,6 @@ class TodoDetailsModel extends ChangeNotifier {
 
     try {
       final todo = await _apiClient.todoItemGet(todoId);
-      print(todo);
       if (todo == null) return;
       _todoItem = todo;
       _isLoadingInProgress = false;

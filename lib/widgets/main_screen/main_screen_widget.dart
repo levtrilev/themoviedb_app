@@ -43,16 +43,17 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   @override
   Widget build(BuildContext context) {
     final model = NotifierProvider.watch<MainScreenModel>(context);
+    // ignore: avoid_print
     print(model);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'TMDB',
         ),
         actions: [
           IconButton(
             onPressed: () => SessionDataProvider().setSessionId(null),
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           )
         ],
       ),
@@ -62,7 +63,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           NotifierProvider(
               model: movieListModel, child: const MovieListWidget()),
           //Example(),
-          Center(child: PaintTestWidget()),
+          const Center(child: PaintTestWidget()),
           NotifierProvider(
               model: todoListModel, child: const TodoListWidget()),
         ],
@@ -70,7 +71,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTab,
         onTap: onSelectTab,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,

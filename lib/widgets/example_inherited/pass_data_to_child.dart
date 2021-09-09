@@ -38,16 +38,16 @@ class _DataOwnerStatefullState extends State<DataOwnerStatefull> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
+        const SizedBox(
           height: 100,
         ),
         ElevatedButton(
           onPressed: _incrementOne,
-          child: Text('Жми раз'),
+          child: const Text('Жми раз'),
         ),
         ElevatedButton(
           onPressed: _incrementTwo,
-          child: Text('Жми два'),
+          child: const Text('Жми два'),
         ),
         DataProviderInherited(
           valueOne: _valueOne,

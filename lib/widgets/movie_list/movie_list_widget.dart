@@ -13,11 +13,11 @@ class MovieListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = NotifierProvider.watch<MovieListModel>(context);
-    if (model == null) return SizedBox.shrink();
+    if (model == null) return const SizedBox.shrink();
     return Stack(
       children: [
         ListView.builder(
-          padding: EdgeInsets.only(top: 70),
+          padding: const EdgeInsets.only(top: 70),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: model.movies.length,
           itemExtent: 163,
@@ -36,12 +36,12 @@ class MovieListWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.black.withOpacity(0.2)),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black.withOpacity(0.2),
                             blurRadius: 8,
-                            offset: Offset(0, 2)),
+                            offset: const Offset(0, 2)),
                       ],
                     ),
                     clipBehavior: Clip.hardEdge,
@@ -53,32 +53,32 @@ class MovieListWidget extends StatelessWidget {
                                 width: 95,
                               )
                             : const SizedBox.shrink(),
-                        SizedBox(
+                        const SizedBox(
                           width: 12,
                         ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Text(
                                 movie.title,
                                 maxLines: 1,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Text(
                                 model.stringFromDate(movie.releaseDate),
                                 maxLines: 1,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.grey,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Text(
@@ -89,7 +89,7 @@ class MovieListWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 6,
                         ),
                       ],
@@ -116,7 +116,7 @@ class MovieListWidget extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white.withAlpha(235),
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               labelText: 'Поиск',
             ),
           ),

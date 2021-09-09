@@ -18,7 +18,7 @@ class _InheritedNotifierExampleState extends State<InheritedNotifierExample> {
         padding: const EdgeInsets.all(50.0),
         child: SimpleCalcWidgetProvider(
           model: _model,
-          child: Column(children: [
+          child: Column(children: const [
             FirstNumberWidget(),
             SecondNumberWidget(),
             SummButtonVidget(),

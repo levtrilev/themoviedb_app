@@ -120,9 +120,9 @@ class MyTestCustomPainter extends CustomPainter {
     paint.strokeWidth = 3;
     canvas.drawCircle(Offset(size.width / 2, size.height / 2), 30, paint);
     paint.color = Colors.blue;
-    canvas.drawRect(Rect.fromLTWH(10, 10, 50, 40), paint);
+    canvas.drawRect(const Rect.fromLTWH(10, 10, 50, 40), paint);
     paint.strokeWidth = 10;
-    canvas.drawRect(Offset.zero & Size(30, 30), paint);
+    canvas.drawRect(Offset.zero & const Size(30, 30), paint);
   }
 
   @override

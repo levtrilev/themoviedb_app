@@ -11,11 +11,11 @@ class TodoListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     const posterPath = 'https://i.imgur.com/OvMZBs9.jpg';
     final model = NotifierProvider.watch<TodoListModel>(context);
-    if (model == null) return SizedBox.shrink();
+    if (model == null) return const SizedBox.shrink();
     return Stack(
       children: [
         ListView.builder(
-          padding: EdgeInsets.only(top: 70),
+          padding: const EdgeInsets.only(top: 70),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           itemCount: model.todoItems.length,
           itemExtent: 110,
@@ -33,12 +33,12 @@ class TodoListWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.black.withOpacity(0.2)),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                       boxShadow: [
                         BoxShadow(
                             color: Colors.black.withOpacity(0.2),
                             blurRadius: 8,
-                            offset: Offset(0, 2)),
+                            offset: const Offset(0, 2)),
                       ],
                     ),
                     clipBehavior: Clip.hardEdge,
@@ -48,32 +48,32 @@ class TodoListWidget extends StatelessWidget {
                           posterPath,
                           width: 95,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 12,
                         ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Text(
                                 todoItem.title,
                                 maxLines: 1,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Text(
                                 'Выполнено: $isCompleted',
                                 maxLines: 1,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.grey,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Text(
@@ -84,7 +84,7 @@ class TodoListWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 6,
                         ),
                       ],
@@ -113,7 +113,7 @@ class TodoListWidget extends StatelessWidget {
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white.withAlpha(235),
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               labelText: 'Поиск',
             ),
           ),
@@ -121,7 +121,7 @@ class TodoListWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 610, left: 330),
           child: OutlinedButton(
-            child: Text('new'),
+            child: const Text('new'),
             onPressed: () => model.onTodoItemTap(
                 // model.minApiTest()
                 context,
