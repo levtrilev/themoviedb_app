@@ -28,13 +28,34 @@ class ApiClientException implements Exception {
 class ApiClient {
   final _client = HttpClient();
   static const _host = 'http://api.themoviedb.org/3';
-  static const _hostMin = 'http://10.0.2.2:5000';
+  // static const _hostMin = 'http://192.168.1.71:80';
+  static const _hostMin = 'http://95.165.6.202:80';
+  // static const _hostMinLan = 'http://192.168.1.71:80';
+  // static const _hostMinWan = 'http://192.168.1.71:80';
+  // static const _hostMinLocalhost = 'http://10.0.2.2:5000';
   static const _imageUrl = 'http://tmdb.org/t/p/w500';
   static const _apiKey = '0a2a46b5593a0978cc8e87ba34037430';
 
   static imageUrl(String path) {
     return _imageUrl + path;
   }
+
+  // Future<void> _checkAddress() async {
+  //   final url = _makeUri(
+  //     _hostMinLan,
+  //     '',
+  //   );
+  //   try {
+  //     Future.delayed(const Duration(milliseconds: 1200), () {
+  //       _hostMin = _hostMinWan;
+  //       throw Exception('no local access, switched to global');
+  //     });
+  //     await _client.getUrl(url);      
+  //       return;
+  //   } catch (e) {
+  //     _hostMin = _hostMinWan;
+  //   }
+  // }
 
   Future<List<TodoItem>?> minimalApiGet() async {
     // ignore: prefer_function_declarations_over_variables
@@ -58,8 +79,8 @@ class ApiClient {
           .toList();
       return responce;
     };
-
-    final result = _get(_hostMin, '/todoitems', parser);
+    //await _checkAddress();
+    final result = await _get(_hostMin, '/todoitems', parser);
 
     return result;
   }
@@ -103,10 +124,11 @@ class ApiClient {
     );
     bool deleted = false as bool;
     try {
-      
       final request = await _client.deleteUrl(url);
       await request.close().then((responce) {
-        responce.statusCode == 204 ? deleted = true as bool : deleted = false as bool;
+        responce.statusCode == 204
+            ? deleted = true as bool
+            : deleted = false as bool;
       });
       return deleted;
     } on SocketException {
@@ -272,7 +294,9 @@ class ApiClient {
     final bodyParameters = <String, dynamic>{
       'id': 0,
       'title': todoItemToCreate.title,
-      'isCompleted': todoItemToCreate.isCompleted
+      'isCompleted': todoItemToCreate.isCompleted,
+      'openDate': todoItemToCreate.openDate.toIso8601String(),
+      'closeDate': todoItemToCreate.closeDate.toIso8601String(),      
     };
     final result = _post(
       _hostMin,
@@ -289,7 +313,9 @@ class ApiClient {
     final bodyParameters = <String, dynamic>{
       'id': 0, //todoItemToUpdate.id,
       'title': todoItemToUpdate.title,
-      'isCompleted': todoItemToUpdate.isCompleted
+      'isCompleted': todoItemToUpdate.isCompleted,
+      'openDate': todoItemToUpdate.openDate.toIso8601String(),
+      'closeDate': todoItemToUpdate.closeDate.toIso8601String(),
     };
     final success = await _put(
       _hostMin,

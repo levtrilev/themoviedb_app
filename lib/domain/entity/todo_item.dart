@@ -10,15 +10,21 @@ class TodoItem {
   final int id;
   final String title;
   final bool isCompleted;
+  final int userId;
+  final DateTime openDate;
+  final DateTime closeDate;
 
   TodoItem({
     required this.id,
     required this.title,
     required this.isCompleted,
+    required this.userId,
+    required this.openDate, 
+    required this.closeDate, 
   });
 
-  factory TodoItem.fromJson(Map<String, dynamic> json) => _$TodoItemFromJson(json);
+  factory TodoItem.fromJson(Map<String, dynamic> json) =>
+      _$TodoItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$TodoItemToJson(this);
 }
-

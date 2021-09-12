@@ -41,13 +41,14 @@ class _TodoDetailsWidgetState extends State<TodoDetailsWidget> {
   }
 }
 
+// ignore: must_be_immutable
 class TodoDetailsScreenWidget extends StatefulWidget {
-  const TodoDetailsScreenWidget({
+  TodoDetailsScreenWidget({
     Key? key,
     required this.todoItem,
   }) : super(key: key);
 
-  final TodoItem todoItem;
+  TodoItem todoItem;
 
   @override
   _TodoDetailsScreenWidgetState createState() =>
@@ -59,13 +60,17 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
 // _TodoDetailsScreenWidgetState(this.todoItem);
   bool _completed = false;
   TextEditingController titleController = TextEditingController.fromValue(null);
-
+  DateTime _openDate = DateTime.now();
+  DateTime _closeDate = DateTime.parse('2000-01-01');
+  DateTime _pickedDate  = DateTime.parse('2000-01-01');
   @override
   void initState() {
     super.initState();
     setState(() {
       _completed = widget.todoItem.isCompleted;
       titleController.text = widget.todoItem.title;
+      _openDate = widget.todoItem.openDate;
+      _closeDate = widget.todoItem.closeDate;
     });
   }
 
@@ -79,6 +84,9 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
       id: widget.todoItem.id,
       title: titleController.text,
       isCompleted: _completed,
+      userId: widget.todoItem.userId,
+      openDate: _openDate,
+      closeDate: _closeDate,
     );
 
     final updatedTodoItemId = await context
@@ -102,6 +110,9 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
       id: 0,
       title: titleController.text,
       isCompleted: _completed,
+      userId: 1,
+      openDate: _openDate,
+      closeDate: _closeDate,
     );
     final createdTodoItemId = await context
         .findAncestorStateOfType<_TodoDetailsWidgetState>()
@@ -133,7 +144,7 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
             child: TextFormField(
               controller: titleController,
               keyboardType: TextInputType.text,
-              maxLines: 5,
+              maxLines: 8,
               decoration: const InputDecoration(border: OutlineInputBorder()),
             ),
           ),
@@ -156,6 +167,27 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
                 },
               ) //Text('Completed: ' + todoItem.isCompleted.toString()),
               ),
+          LayoutId(
+            id: 'userId',
+            child: Text('User: ' + widget.todoItem.userId.toString()),
+          ),
+          LayoutId(
+            id: 'openDate',
+            child: DatePickerMyWidget(
+              initialDate: widget.todoItem.openDate,
+              label: 'Назначeно',
+              onDatePicked: (){_openDate = _pickedDate;},
+            ),
+          ),
+          LayoutId(
+            id: 'closeDate',
+            child: DatePickerMyWidget(
+              initialDate:
+                  widget.todoItem.closeDate,
+              label: 'Закрыто',
+              onDatePicked: (){_closeDate = _pickedDate;},
+            ),
+          ),
         ],
       ),
       floatingActionButton: Row(
@@ -184,6 +216,78 @@ class _TodoDetailsScreenWidgetState extends State<TodoDetailsScreenWidget> {
   }
 }
 
+// ignore: must_be_immutable
+class DatePickerMyWidget extends StatefulWidget {
+  DateTime initialDate;
+  String label;
+  Function onDatePicked;
+  DatePickerMyWidget({
+    Key? key,
+    required this.initialDate,
+    required this.label,
+    required this.onDatePicked,
+  }) : super(key: key);
+
+  @override
+  State<DatePickerMyWidget> createState() => _DatePickerMyWidgetState();
+}
+
+class _DatePickerMyWidgetState extends State<DatePickerMyWidget> {
+  DateTime selectedDate = DateTime.now();
+  // DateTime? initialDate;
+  TextEditingController controller = TextEditingController();
+  String? presentText;
+  void _selectDate() async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: widget.initialDate,
+        firstDate: DateTime.parse('0001-01-01'),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        controller.text = picked.toString();
+        context
+            .findAncestorStateOfType<_TodoDetailsScreenWidgetState>()
+            ?._pickedDate = picked;
+            widget.onDatePicked();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    controller.text = widget.initialDate.toString();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 82,
+      child: Column(
+        children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(
+                widget.label,
+                textAlign: TextAlign.left,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              )),
+          GestureDetector(
+              onTap: () => _selectDate(),
+              child: AbsorbPointer(
+                  child: TextFormField(
+                controller: controller,
+                initialValue: presentText,
+              ))),
+        ],
+      ),
+    );
+  }
+}
+
 class FormLayoutDelegate extends MultiChildLayoutDelegate {
   FormLayoutDelegate({required this.position});
 
@@ -197,26 +301,38 @@ class FormLayoutDelegate extends MultiChildLayoutDelegate {
     Size leadingSize = Size.zero;
     if (hasChild('Title')) {
       leadingSize = layoutChild(
-        'Title', // The id once again.
+        'Title',
         const BoxConstraints(
           maxWidth: 300,
-          maxHeight: 400,
+          maxHeight: 500,
         ),
       );
       // No need to position this child if we want to have it at Offset(0, 0).
-      positionChild('Title', const Offset(90, 40));
+      positionChild('Title', const Offset(95, 40));
     }
     if (hasChild('id')) {
       leadingSize = layoutChild('id', BoxConstraints.loose(size));
-      positionChild('id', const Offset(30, 16));
+      positionChild('id', const Offset(40, 16));
     }
     if (hasChild('isCompletedLabel')) {
       leadingSize = layoutChild('isCompletedLabel', BoxConstraints.loose(size));
-      positionChild('isCompletedLabel', const Offset(90, 16));
+      positionChild('isCompletedLabel', const Offset(95, 16));
     }
     if (hasChild('isCompleted')) {
       leadingSize = layoutChild('isCompleted', BoxConstraints.loose(size));
-      positionChild('isCompleted', const Offset(162, 0));
+      positionChild('isCompleted', const Offset(167, 0));
+    }
+    if (hasChild('userId')) {
+      leadingSize = layoutChild('userId', BoxConstraints.loose(size));
+      positionChild('userId', const Offset(23, 36));
+    }
+    if (hasChild('openDate')) {
+      leadingSize = layoutChild('openDate', BoxConstraints.loose(size));
+      positionChild('openDate', const Offset(6, 58));
+    }
+    if (hasChild('closeDate')) {
+      leadingSize = layoutChild('closeDate', BoxConstraints.loose(size));
+      positionChild('closeDate', const Offset(6, 146));
     }
   }
 

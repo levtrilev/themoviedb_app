@@ -15,6 +15,9 @@ class TodoDetailsModel extends ChangeNotifier {
           id: 0,
           title: '',
           isCompleted: false,
+          userId: 1,
+          openDate: DateTime.now(),
+          closeDate: DateTime.parse('2021-01-01'),
         );
         _todoItem = newTodo;
       return Future.delayed(const Duration(milliseconds: 20), () => newTodo);

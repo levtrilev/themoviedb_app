@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:themoviedb/domain/api_client.dart';
 import 'package:themoviedb/domain/entity/movie.dart';
+import 'package:themoviedb/domain/entity/popular_movie_responce.dart';
 import 'package:themoviedb/ui/navigation/main_navigation.dart';
 
 class MovieListModel extends ChangeNotifier {
@@ -20,25 +21,38 @@ class MovieListModel extends ChangeNotifier {
   String stringFromDate(DateTime? date) =>
       date != null ? _dateFormat.format(date) : '';
 
-  void setupLocale(BuildContext context) {
+  Future<void> setupLocale(BuildContext context) async {
     final locale = Localizations.localeOf(context).toLanguageTag();
     if (_locale == locale) return;
     _locale = locale;
     _dateFormat = DateFormat.yMMMMd(locale);
+    await _resetList();
+  }
+
+  Future<void> _resetList() async {
     _currentPage = 0;
     _totalPages = 1;
     _movies.clear();
-    _loadMovies();
+    await _loadNextPage();
   }
 
-  Future<void> _loadMovies() async {
+  Future<PopularMovieResponce> _loadMovies(int nextPage, String locale) async {
+    final query = _searchQuery;
+    if (query == null) {
+      return await _apiClient.popularMovie(nextPage, locale);
+    } else {
+      return await _apiClient.searchMovie(nextPage, locale, query);
+    }
+  }
+
+  Future<void> _loadNextPage() async {
     if (_isLoadingInProgress || _currentPage >= _totalPages) return;
     _isLoadingInProgress = true;
 
     final nextPage = _currentPage + 1;
     // final moviesResponce = await _apiClient.popularMovie(nextPage, _locale);
     try {
-      final moviesResponce = await _apiClient.popularMovie(nextPage, 'ru-RU');
+      final moviesResponce = await _loadMovies(nextPage, 'ru-RU');
       _movies.addAll(moviesResponce.movies);
       _isLoadingInProgress = false;
       _currentPage = moviesResponce.page;
@@ -89,6 +103,6 @@ class MovieListModel extends ChangeNotifier {
 
   void showedMovieAtIndex(int index) {
     if (index < _movies.length - 1) return;
-    _loadMovies();
+    _loadNextPage();
   }
 }
