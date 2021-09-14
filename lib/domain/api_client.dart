@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:themoviedb/domain/entity/movie_details.dart';
 import 'package:themoviedb/domain/entity/todo_item.dart';
 
 import 'entity/popular_movie_responce.dart'; // for mobile (non-web)
@@ -278,6 +279,24 @@ class ApiClient {
       'language': locale,
       'query': query,
       'include_adult': true.toString(),
+    });
+    return result;
+  }
+
+  Future<MovieDetails> movieDetails(
+    int movieId,
+    String locale,
+  ) async {
+    // ignore: prefer_function_declarations_over_variables
+    final parser = (dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final responce = MovieDetails.fromJson(jsonMap);
+      return responce;
+    };
+
+    final result = _get(_host, '/movie/$movieId', parser, <String, dynamic>{
+      'api_key': _apiKey,
+      'language': locale,
     });
     return result;
   }

@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_main_info_widget.dart';
 
 class MovieDetailsWidget extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
-  final movieId;
   const MovieDetailsWidget({
     Key? key,
-    required this.movieId,
   }) : super(key: key);
 
   @override

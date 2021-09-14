@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/widgets/auth/auth_model.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
@@ -8,6 +9,7 @@ import 'package:themoviedb/widgets/example_inherited/inherited_notifier_example.
 import 'package:themoviedb/widgets/example_inherited/pass_data_to_child.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
+import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_widget.dart';
 import 'package:themoviedb/widgets/todo_details/todo_details_widget.dart';
 
@@ -36,12 +38,17 @@ class MainNavigation {
           child: const MainScreenWidget(),
         ),
     MainNavigationRouteNames.movieDetails: (context) {
+      int movieId;
       final arguments = ModalRoute.of(context)!.settings.arguments;
       if (arguments is int) {
-        return MovieDetailsWidget(movieId: arguments);
+        movieId = arguments;
       } else {
-        return const MovieDetailsWidget(movieId: 0);
+        movieId = 0;
       }
+      return NotifierProvider(
+        child: const MovieDetailsWidget(),
+        model: MovieDetailsModel(movieId: movieId),
+      );
     },
     MainNavigationRouteNames.todoDetails: (context) {
       final arguments = ModalRoute.of(context)!.settings.arguments;
@@ -56,4 +63,20 @@ class MainNavigation {
     MainNavigationRouteNames.inheritedNotifierExample: (context) =>
         const InheritedNotifierExample(),
   };
+  Route<Object> onGenereteRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case MainNavigationRouteNames.movieDetails:
+        final arguments = settings.arguments;
+        final movieId = arguments is int ? arguments : 0;
+        return MaterialPageRoute(
+          builder: (context) => NotifierProvider(
+            child: const MovieDetailsWidget(),
+            model: MovieDetailsModel(movieId: movieId),
+          ),
+        );
+      default:
+      const widget = Text('Navigation Error!!!...');
+      return MaterialPageRoute(builder: (context) => widget); 
+    }
+  }
 }

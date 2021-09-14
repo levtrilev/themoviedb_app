@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+
+import 'movie_date_parser.dart';
 /*
 // use "flutter pub run build_runner build" to generate file movie.g.dart
 // or use "flutter pub run build_runner watch"to follow changes in your files
@@ -10,7 +12,7 @@ class Movie {
   final String? posterPath;
   final bool adult;
   final String overview;
-  @JsonKey(fromJson: _parseDateFromString)
+  @JsonKey(fromJson: parseDateFromString)
   final DateTime? releaseDate;
   // ignore: non_constant_identifier_names
   final List<int> genre_ids;
@@ -45,10 +47,10 @@ class Movie {
   });
 
 
-  static DateTime? _parseDateFromString(String? rawDate) {
-    if (rawDate == null || rawDate.isEmpty) return null;
-    return DateTime.tryParse(rawDate);
-  }
+  // static DateTime? _parseDateFromString(String? rawDate) {
+  //   if (rawDate == null || rawDate.isEmpty) return null;
+  //   return DateTime.tryParse(rawDate);
+  // }
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
