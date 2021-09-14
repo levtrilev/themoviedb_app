@@ -61,11 +61,16 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
         index: _selectedTab,
         children: [
           NotifierProvider(
-              model: movieListModel, child: const MovieListWidget()),
+            create: () => movieListModel,
+            child: const MovieListWidget(),
+            isManagingModel: false,
+          ),
           //Example(),
           const Center(child: PaintTestWidget()),
           NotifierProvider(
-              model: todoListModel, child: const TodoListWidget()),
+            create: () => todoListModel,
+            child: const TodoListWidget(),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

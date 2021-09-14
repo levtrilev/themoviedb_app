@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:themoviedb/domain/api_client.dart';
 import 'package:themoviedb/domain/entity/movie_details.dart';
+//import 'package:themoviedb/library/widgets/inherited/provider.dart';
 
 class MovieDetailsModel extends ChangeNotifier {
   final _apiClient = ApiClient();
   final int movieId;
-  late final String _locale;
+  String _locale = '';
   late DateFormat _dateFormat;
   MovieDetails? _movieDetails;
 
@@ -25,7 +26,7 @@ class MovieDetailsModel extends ChangeNotifier {
   }
 
   Future<void> loadDetails() async {
-    _movieDetails = await _apiClient.movieDetails(movieId, _locale);
+    _movieDetails = await _apiClient.movieDetails(movieId, 'ru-RU');
     notifyListeners();
   }
 }

@@ -31,10 +31,10 @@ class MainNavigation {
   final routs = <String, Widget Function(BuildContext)>{
     MainNavigationRouteNames.auth: (context) => NotifierProvider(
           child: const AuthWidget(),
-          model: AuthModel(),
+          create: () => AuthModel(),
         ),
     MainNavigationRouteNames.mainScreen: (context) => NotifierProvider(
-          model: MainScreenModel(),
+          create: () => MainScreenModel(),
           child: const MainScreenWidget(),
         ),
     MainNavigationRouteNames.movieDetails: (context) {
@@ -47,7 +47,7 @@ class MainNavigation {
       }
       return NotifierProvider(
         child: const MovieDetailsWidget(),
-        model: MovieDetailsModel(movieId: movieId),
+        create: () => MovieDetailsModel(movieId: movieId)..setupLocale(context),
       );
     },
     MainNavigationRouteNames.todoDetails: (context) {
@@ -71,7 +71,7 @@ class MainNavigation {
         return MaterialPageRoute(
           builder: (context) => NotifierProvider(
             child: const MovieDetailsWidget(),
-            model: MovieDetailsModel(movieId: movieId),
+            create: () => MovieDetailsModel(movieId: movieId),
           ),
         );
       default:
