@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:themoviedb/domain/api_client.dart';
+import 'package:themoviedb/domain/entity/movie_details_credits.dart';
 import 'package:themoviedb/elements/radial_percent_widget.dart';
-//import 'package:themoviedb/images.dart';
 import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_screen_cast_widget.dart';
@@ -33,6 +34,10 @@ class MovieDetailsMainInfoWidget extends StatelessWidget {
           ),
           child: _DescriptionWidget(),
         ),
+        Padding(
+          padding: EdgeInsets.all(10.0),
+          child: _CrewWidget(),
+        ),
         MovieDetailsScreenCastWidget(),
       ],
     );
@@ -49,11 +54,9 @@ class _DescriptionWidget extends StatelessWidget {
 
     return Column(
       children: [
-        const Text(
-          'Overview',
-          style: TextStyle(fontSize: 16, color: Colors.white),
-          textAlign: TextAlign.left
-        ),
+        const Text('Overview',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+            textAlign: TextAlign.left),
         Text(
           overview,
           style: const TextStyle(fontSize: 14, color: Colors.white),
@@ -233,6 +236,79 @@ class _SummaryWidget extends StatelessWidget {
       //'R, 04/29/21 (US) 1h 49m  Action, Adventure, Thriller, War',
       style: const TextStyle(fontSize: 16, color: Colors.white),
       textAlign: TextAlign.center,
+    );
+  }
+}
+
+class _CrewWidget extends StatelessWidget {
+  const _CrewWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = NotifierProvider.watch<MovieDetailsModel>(context);
+    if (model == null) return const SizedBox.shrink();
+    var crew = model.movieDetails?.credits.crew;
+    if (crew == null || crew.isEmpty) return const SizedBox.shrink();
+    crew = crew.sublist(0, crew.length >= 4 ? 4 : crew.length);
+
+    return Column(
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _CrewItemWidget(itemNumber: 0, crew: crew),
+                const SizedBox(
+                  height: 12,
+                ),
+                _CrewItemWidget(itemNumber: 1, crew: crew),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _CrewItemWidget(itemNumber: 2, crew: crew),
+                const SizedBox(
+                  height: 12,
+                ),
+                _CrewItemWidget(itemNumber: 3, crew: crew),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _CrewItemWidget extends StatelessWidget {
+  final int itemNumber;
+  final List<Crew>? crew;
+  const _CrewItemWidget({
+    Key? key,
+    required this.itemNumber,
+    this.crew,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    const nameStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    );
+    if (crew!.length < itemNumber + 1) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(crew![itemNumber].name, style: nameStyle),
+        Text(crew![itemNumber].job, style: nameStyle),
+      ],
     );
   }
 }
