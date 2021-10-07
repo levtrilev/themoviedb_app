@@ -297,7 +297,7 @@ class ApiClient {
     final result = _get(_host, '/movie/$movieId', parser, <String, dynamic>{
       'api_key': _apiKey,
       'language': locale,
-      'append_to_response': 'credits',
+      'append_to_response': 'credits,videos',
     });
     return result;
   }

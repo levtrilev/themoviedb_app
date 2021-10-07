@@ -4,6 +4,7 @@ import 'package:themoviedb/domain/api_client.dart';
 import 'package:themoviedb/domain/entity/movie_details_credits.dart';
 import 'package:themoviedb/elements/radial_percent_widget.dart';
 import 'package:themoviedb/library/widgets/inherited/provider.dart';
+import 'package:themoviedb/ui/navigation/main_navigation.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_screen_cast_widget.dart';
 
@@ -145,6 +146,9 @@ class _ScoreWidget extends StatelessWidget {
         NotifierProvider.watch<MovieDetailsModel>(context)?.movieDetails;
     final voteAverage = movieDetails?.voteAverage ?? 0;
     final rating = voteAverage.toDouble() / 10;
+    final videos = movieDetails?.videos.results
+        .where((video) => video.type == 'Trailer' && video.site == 'YouTube');
+    final trailerKey = videos?.isNotEmpty == true ? videos?.first.key : null;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -180,15 +184,20 @@ class _ScoreWidget extends StatelessWidget {
           width: 1,
           color: Colors.grey[700],
         ),
-        TextButton(
-          onPressed: () {},
-          child: Row(
-            children: const [
-              Icon(Icons.play_arrow),
-              Text('Play Trailer'),
-            ],
-          ),
-        ),
+        trailerKey != null
+            ? TextButton(
+                onPressed: () => Navigator.of(context).pushNamed(
+                  MainNavigationRouteNames.movieTrailerWidget,
+                  arguments: trailerKey,
+                ),
+                child: Row(
+                  children: const [
+                    Icon(Icons.play_arrow),
+                    Text('Play Trailer'),
+                  ],
+                ),
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }

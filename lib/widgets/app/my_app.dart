@@ -38,13 +38,14 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: mainNavigation.initialRoute(model.isAuth),
       routes: mainNavigation.routs,
-      onGenerateRoute: (RouteSettings settings) {
-        return MaterialPageRoute<void>(builder: (context) {
-          return const Scaffold(
-            body: Center(child: Text('Произошла ошибка навигации')),
-          );
-        });
-      },
+      onGenerateRoute: (RouteSettings settings) => mainNavigation.onGenerateRoute(settings),
+      // {
+      //   return MaterialPageRoute<void>(builder: (context) {
+      //     return const Scaffold(
+      //       body: Center(child: Text('Произошла ошибка навигации')),
+      //     );
+      //   });
+      // },
     );
   }
 }

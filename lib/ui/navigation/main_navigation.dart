@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:themoviedb/library/widgets/inherited/provider.dart';
 import 'package:themoviedb/widgets/auth/auth_model.dart';
@@ -11,12 +11,14 @@ import 'package:themoviedb/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_widget.dart';
+import 'package:themoviedb/widgets/movie_trailer/movie_trailer_widget.dart';
 import 'package:themoviedb/widgets/todo_details/todo_details_widget.dart';
 
 abstract class MainNavigationRouteNames {
   static const auth = 'auth';
   static const mainScreen = '/';
   static const movieDetails = '/movie_details';
+  static const movieTrailerWidget = '/movie_details/trailer';
   static const resetPassword = '/reset_password';
   static const jsonTest = '/json_test';
   static const passDataToChild = '/pass_data_to_child';
@@ -63,7 +65,7 @@ class MainNavigation {
     MainNavigationRouteNames.inheritedNotifierExample: (context) =>
         const InheritedNotifierExample(),
   };
-  Route<Object> onGenereteRoute(RouteSettings settings) {
+  Route<Object> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case MainNavigationRouteNames.movieDetails:
         final arguments = settings.arguments;
@@ -73,6 +75,12 @@ class MainNavigation {
             child: const MovieDetailsWidget(),
             create: () => MovieDetailsModel(movieId: movieId),
           ),
+        );
+      case MainNavigationRouteNames.movieTrailerWidget:
+              final arguments = settings.arguments;
+              final youtubeKey = arguments is String ? arguments : '';
+                      return MaterialPageRoute(
+          builder: (context) => MovieTrailerWidget(youtubeKey: youtubeKey,),
         );
       default:
       const widget = Text('Navigation Error!!!...');
