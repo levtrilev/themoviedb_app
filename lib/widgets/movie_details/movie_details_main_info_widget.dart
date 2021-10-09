@@ -101,6 +101,18 @@ class _TopPosterWidget extends StatelessWidget {
                 : const SizedBox.shrink(),
             //child: Image(image: AppImages.christnyFather),
           ),
+          Positioned(
+            top: 4,
+            left: 360,
+            //bottom: 16,
+            child: IconButton(
+              onPressed: () => model?.toggleFavorite(),
+              icon: Icon(model?.isFavorite == true ? Icons.favorite : Icons.favorite_outline),
+              color: Colors.white,
+              // focusColor: Colors.red,
+              // hoverColor: Colors.red,
+            ),
+          )
         ],
       ),
     );

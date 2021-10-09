@@ -18,6 +18,18 @@ import 'entity/popular_movie_responce.dart'; // for mobile (non-web)
 */
 
 enum ApiClientExceptionType { network, auth, apiKey, other, token }
+enum MediaType { movie, tv }
+
+extension MediaTypeAsString on MediaType {
+  String asString() {
+    switch (this) {
+      case MediaType.movie:
+        return 'movie';
+      case MediaType.tv:
+        return 'tv';
+    }
+  }
+}
 
 class ApiClientException implements Exception {
   final ApiClientExceptionType type;
@@ -51,12 +63,65 @@ class ApiClient {
   //       _hostMin = _hostMinWan;
   //       throw Exception('no local access, switched to global');
   //     });
-  //     await _client.getUrl(url);      
+  //     await _client.getUrl(url);
   //       return;
   //   } catch (e) {
   //     _hostMin = _hostMinWan;
   //   }
   // }
+
+  Future<int> markAsFavorite({
+    required String sessionId,
+    required int accountId,
+    required MediaType mediaType,
+    required int mediaId,
+    required bool isFavorite,
+  }) async {
+    // ignore: prefer_function_declarations_over_variables
+    final parser = (dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final statusCode = jsonMap['status_code'] as int;
+      return statusCode;
+    };
+//     response example:
+// {
+//   "status_code": 12,
+//   "status_message": "The item/record was updated successfully."
+// }
+    final bodyParameters = <String, dynamic>{
+      'media_type': mediaType.asString(),
+      'media_id': mediaId.toString(),
+      'favorite': isFavorite,
+    };
+    final result = _post(
+      _host,
+      '/account/$accountId/favorite',
+      bodyParameters,
+      parser,
+      <String, dynamic>{
+        'api_key': _apiKey,
+        'session_id': sessionId,
+      },
+    );
+    return result;
+  }
+
+  Future<int> getAccountInfo(
+    String sessionId,
+  ) async {
+    // ignore: prefer_function_declarations_over_variables
+    final parser = (dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final result = jsonMap['id'] as int;
+      return result;
+    };
+
+    final result = _get(_host, '/account', parser, <String, dynamic>{
+      'api_key': _apiKey,
+      'session_id': sessionId,
+    });
+    return result;
+  }
 
   Future<List<TodoItem>?> minimalApiGet() async {
     // ignore: prefer_function_declarations_over_variables
@@ -83,6 +148,25 @@ class ApiClient {
     //await _checkAddress();
     final result = await _get(_hostMin, '/todoitems', parser);
 
+    return result;
+  }
+
+  Future<bool> isFavorite(
+    String sessionId,
+    int movieId,
+  ) async {
+    // ignore: prefer_function_declarations_over_variables
+    final parser = (dynamic json) {
+      final jsonMap = json as Map<String, dynamic>;
+      final responce = jsonMap['favorite'] as bool;
+      return responce;
+    };
+//  /movie/$id/account_states
+    final result =
+        _get(_host, '/movie/$movieId/account_states', parser, <String, dynamic>{
+      'api_key': _apiKey,
+      'session_id': sessionId,
+    });
     return result;
   }
 
@@ -223,7 +307,7 @@ class ApiClient {
       throw ApiClientException(ApiClientExceptionType.network);
     } on ApiClientException {
       rethrow;
-    } catch (_) {
+    } catch (e) {
       //rethrow;
       throw ApiClientException(ApiClientExceptionType.other);
     }
@@ -316,7 +400,7 @@ class ApiClient {
       'title': todoItemToCreate.title,
       'isCompleted': todoItemToCreate.isCompleted,
       'openDate': todoItemToCreate.openDate.toIso8601String(),
-      'closeDate': todoItemToCreate.closeDate.toIso8601String(),      
+      'closeDate': todoItemToCreate.closeDate.toIso8601String(),
     };
     final result = _post(
       _hostMin,
